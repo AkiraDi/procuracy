@@ -1,0 +1,74 @@
+<include file="Public/header" />
+<style>
+	tr{height:50px;}		
+</style>		
+<body style="background-color:white;padding:10px;font-size:16px">
+	<form method="post" action="__GROUP__/System/editCourtHandler" id="form1">
+	<div class="page-header">
+		<h1>检察院信息</h1>
+	</div><!-- /.page-header -->
+	<table width="100%" border="0" cellpadding="2" cellspacing="0">
+		<tr>
+			<td colspan="2"><label>检察院名称：</label><input type="text" name="C_Name" style="width:500px" value={$info.C_Name}></td>
+		</tr>
+		<tr>
+			<td>
+				<label>级别：</label>
+				<select class="chosen-select" id="select1" name="CL_Name" data-placeholder="检察院级别..."  style="width:200px;" >
+					<option value="">  </option>
+					<volist name="courtlevel" id="vo">
+						<option value={$vo.CL_ID}>{$vo.CL_Name}</option>		
+					</volist>															
+				</select>
+			</td>
+			<td>
+				<label>所属检察院：</label>
+				<select class="chosen-select" id="select2" name="C_ManageBy" data-placeholder="所属检察院..."  style="width:200px;" >
+					<option value="">  </option>
+					<option value="">无</option>
+					<volist name="courts" id="vo">
+						<option value={$vo.C_ID}>{$vo.C_Name}</option>
+					</volist>												
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td><label>业务联系人：</label><input type="text" name="C_Man" value="{$info.C_Man}"  style="width:200px"></td>
+			<td><label>联系电话：</label><input type="text" name="C_Phone" value="{$info.C_Phone}"  style="width:200px"></td>
+		</tr>
+		<tr>
+			<td><label>邮箱：</label><input type="text" name="C_Mail"  value="{$info.C_Mail}"  style="width:200px"></td>
+			<td><label>传真：</label><input type="text" name="C_Fax"  value="{$info.C_Fax}"  style="width:200px"></td>
+		</tr>
+		<tr>
+			<td colspan="2"><label>备注：</label><textarea class="form-control" name="C_Comment"  id="form-field-8" rows="2">{$info.C_Comment}</textarea></td>
+		</tr>
+		<tr align="center" style="height:90px">
+			<td colspan="2">
+				<button class="btn btn-info" type="submit"><i class="ace-icon fa fa-check bigger-110"></i>保存</button>
+				&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+				<button class="btn" type="reset"><i class="ace-icon fa fa-undo bigger-110"></i>重置</button>
+			</td>
+		</tr>
+			<input type="hidden"  name="C_ID"  value="{$info.C_ID}" />
+	</table>
+	</form>
+	<input type="hidden" id="CL_Name" value="{$info.CL_Name}" />
+	<input type="hidden" id="C_ManageBy" value="{$info.C_ManageBy}" />
+</body>
+<script src="__PUBLIC__/js/jquery.min.js"></script>
+<script src="__PUBLIC__/js/chosen.jquery.min.js"></script>
+<script src="__PUBLIC__/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript">
+	jQuery(function($){
+		
+		//下拉框选择
+		$("#select1").find("option[value='"+$("#CL_Name").val()+"']").attr("selected","selected");
+		$("#select2").find("option[value='"+$("#C_ManageBy").val()+"']").attr("selected","selected");
+		//初始化下拉框样式
+		$('.chosen-select').chosen({allow_single_deselect:true}); 
+		//重置表单
+		$('#form1')[0].reset();
+	});
+</script>
+</html>

@@ -1,0 +1,177 @@
+<include file="Public/header" />
+<body class="no-skin">
+    <!-- #section:basics/navbar.layout -->
+    <div id="navbar" class="navbar navbar-default">
+        <script type="text/javascript">
+            try {
+                ace.settings.check('navbar', 'fixed')
+            } catch (e) {
+            }
+        </script>
+
+        <div class="navbar-container" id="navbar-container">
+            <!-- #section:basics/sidebar.mobile.toggle -->
+            <button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler">
+                <span class="sr-only">Toggle sidebar</span>
+
+                <span class="icon-bar"></span>
+
+                <span class="icon-bar"></span>
+
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- /section:basics/sidebar.mobile.toggle -->
+            <div class="navbar-header pull-left">
+                <!-- #section:basics/navbar.layout.brand -->
+                <a href="#" class="navbar-brand">
+                    <small>
+                        中国检察听证网
+                    </small>
+                </a>
+                <!-- /section:basics/navbar.layout.brand -->
+            </div>
+            <include file="Public/userbar" />
+        </div><!-- /.navbar-container -->
+    </div>
+
+    <!-- /section:basics/navbar.layout -->
+    <div class="main-container" id="main-container">
+        <script type="text/javascript">
+            try {
+                ace.settings.check('main-container', 'fixed')
+            } catch (e) {
+            }
+        </script>
+
+        <!-- #section:basics/sidebar -->
+        <div id="sidebar" class="sidebar responsive">
+            <script type="text/javascript">
+                try {
+                    ace.settings.check('sidebar', 'fixed')
+                } catch (e) {
+                }
+            </script>
+
+            <include file="Public/menu" />
+
+            <!-- #section:basics/sidebar.layout.minimize -->
+            <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+                <i class="ace-icon fa fa-angle-double-left" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
+            </div>
+
+            <!-- /section:basics/sidebar.layout.minimize -->
+            <script type="text/javascript">
+                try {
+                    ace.settings.check('sidebar', 'collapsed')
+                } catch (e) {
+                }
+            </script>
+        </div>
+
+        <!-- /section:basics/sidebar -->
+        <div class="main-content">
+            <!-- #section:basics/content.breadcrumbs -->
+            <div class="breadcrumbs" id="breadcrumbs">
+                <script type="text/javascript">
+                    try {
+                        ace.settings.check('breadcrumbs', 'fixed')
+                    } catch (e) {
+                    }
+                </script>
+                <!-- /section:basics/content.searchbox -->
+            </div>
+            <!-- /section:basics/content.breadcrumbs -->
+            <div class="page-content">
+                <div class="page-content-area">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <!-- PAGE CONTENT BEGINS -->
+
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="table-header" style="background-color: plum" >
+                                        <i class="ace-icon fa fa-table"></i>&nbsp&nbsp直播监控
+                                    </div>
+                                    <form class="nav-search" id="nav-search" method="post" action="__GROUP__/Live/breakPage">
+<!--                                        <p>
+                                            <input type="hidden" name="isSearch" value="1" id="seach" />
+                                            <input type="text" placeholder="刷新间隔" name="Search" id='Search' value="{$isSearch}"  />
+                                            <button type="submit" class="btn btn-success">刷新</button>
+                                            <a href="__GROUP__/Live/index">停止</a>
+                                        </p>-->
+                                    </form>
+                                    <!-- <div class="dataTables_borderWrap"> -->
+                                    <div>
+                                        <table id="table1" class="table table-striped table-bordered table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>通道号</th>
+                                                    <th>案号名称</th>
+                                                    <th>出流听证室</th>
+                                                    <th>PID</th>
+                                                    <th>操作</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            <volist name="playlist" id="vo">
+                                                <tr>
+                                                    <td>{$vo.L_ID}({$vo.L_Comment})</td>
+                                                    <td>{$vo.P_CaseName}</td>
+                                                    <td>{$vo.C_Name}{$vo.CR_Name}</td>
+                                                    <td>{$vo.P_OutPID}</td>
+                                                    <td width="30%">
+                                                        <button class="btn btn-danger" id="{$vo.P_ID}">查询直播状态</button>
+                                                        <button class="btn btn-info" id="{$vo.P_ID}">应急操作管理</button>
+                                                    </td>
+                                                </tr>
+                                            </volist>
+                                            </tbody>
+                                        </table>
+                                    </div><!-- end<div class="dataTables_borderWrap"> -->
+                                </div><!-- end col -->
+                            </div><!-- end row -->
+
+                            <!-- PAGE CONTENT ENDS -->
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                </div><!-- /.page-content-area -->
+            </div><!-- /.page-content -->
+        </div><!-- /.main-content -->
+
+        <include file="Public/footer" />
+        <script type="text/javascript">
+            window.onload = function(){
+                $('#table1').dataTable({
+                    stateSave: true, //保存表格状态
+                    language: {
+                        "url": "/Public/font/zh_CN.txt"
+                    }
+                });
+            };
+            //应急
+            $("button[class='btn btn-danger']").click(function () {
+                var id = $(this).attr('id');
+                var index = layer.open({
+                    type: 2,
+                    title: "硬件详情",
+                    content: '/index.php/Live/state?PID=' + id,
+                    area: ['400px', '250px'],
+                });
+            });
+            
+            $("button[class='btn btn-info']").click(function () {
+                var id = $(this).attr('id');
+                var index = layer.open({
+                    type: 2,
+                    title: "硬件详情",
+                    content: '/index.php/Live/outLive?PID=' + id,
+                    area: ['600px', '400px'],
+                });
+            });
+            
+
+           
+        </script>
+</body>
+</html>

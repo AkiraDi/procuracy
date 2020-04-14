@@ -1,0 +1,77 @@
+<include file="Public/header" />
+<style>
+	tr{height:50px;}		
+</style>		
+<body style="background-color:white;padding:15px;font-size:16px">
+	<form method="post" action="__GROUP__/MyTask/editTaskHandler" >
+            <tr>
+            <td><label>案号：</label><input type="text" name="P_CaseName" style="width:200px" readonly value="{$playlist.P_CaseName}"></td>
+            </tr>
+            <br/>
+            <tr>
+                    <td><label>取消原因：</label><textarea class="form-control" id="P_Fail" rows="3" name="P_Fail"></textarea></td>
+            </tr>
+
+            <tr align="center" style="height:90px">
+                    <td colspan="2"></td>
+                    <td colspan="1"><button class="btn btn-info" type="submit"><i class="ace-icon fa fa-check bigger-90"></i>保存</button></td>
+                    <td colspan="1"><button class="btn" type="reset"><i class="ace-icon fa fa-undo bigger-90"></i>重置</button></td>
+                    <td colspan="2"></td>
+            </tr>
+	</table>
+	<input type="hidden" name="P_ID"  value="{$playlist.P_ID}" />
+	</form>
+</body>
+<script src="__PUBLIC__/js/jquery.min.js"></script>
+<script src="__PUBLIC__/js/chosen.jquery.min.js"></script>
+<script src="__PUBLIC__/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript">
+	jQuery(function($){
+		//选中入流检察院
+		$("#selectCourt1").find("option[value='"+$("#courtIn").val()+"']").attr("selected","selected");
+		//选中入流听证室
+		$("#selectCourtRoom").find("option[value='"+$("#courtRoomIn").val()+"']").attr("selected","selected");
+		//选中出流检察院
+		$("#selectCourt2").find("option[value='"+$("#LID").val()+"']").attr("selected","selected");
+		
+		//选择入流检察院时，查询该检察院所有的听证室，填入听证室select
+		 $('#selectCourt1').change(function(){
+			$("#selectCourtRoom").chosen("destroy"); 
+			var courtId=$(this).val();
+			$.ajax({
+				url: '/index.php/ApplyTask/searchCourtRoom?C_ID='+courtId,
+				dataType: 'json',
+				type: 'GET',
+				async: false,
+				success: function(msg) {
+					//删除所有option
+					$("#selectCourtRoom  option").remove();
+					for(i=0;i<msg.data.length;i++){
+						//循环插入option
+						$("#selectCourtRoom").append("<option value='"+msg.data[i].CR_ID+"'>["+msg.data[i].CR_Name+"]  "+msg.data[i].CR_URL+"  端口:"+msg.data[i].CR_Port+"</option>");
+					}
+				}
+			});
+			$("#selectCourtRoom").chosen();
+		});
+		
+		//选择出流检察院时，查询PID
+		 $('#selectCourt2').change(function(){
+			var L_ID=$(this).val();
+			$.ajax({
+				url: '/index.php/ApplyTask/searchOutPID?L_ID='+L_ID,
+				dataType: 'json',
+				type: 'GET',
+				async: false,
+				success: function(msg) {
+					$("#PID1,#PID2").val(msg.data.L_PID);
+					$("#P_CourtOut").val(msg.data.L_CourtName);
+				}
+			});
+		});
+		
+		$('.chosen-select').chosen();
+		
+	});
+</script>
+</html>

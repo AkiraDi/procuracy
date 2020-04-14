@@ -1,0 +1,40 @@
+<include file="Public/header" />
+<style>
+    tr{height:50px;}		
+</style>		
+<body style="background-color:white;padding:15px;font-size:16px">
+<tr>
+    <td><label>案号：</label>
+        <input type="text" name="P_CaseName" style="width:200px" readonly value="{$playlist.P_CaseName}">
+    </td>
+</tr></br>
+<tr>
+    <td><label>PID：</label>
+        <input type="text" name="P_OutPID" style="width:200px" readonly value="{$playlist.P_OutPID}">
+    </td>
+</tr></br>
+<tr>
+    <td><label>解码器状态：</label>
+        <if condition="$playlist.flow eq ok">
+            <input type="text" name="flow" style="width:200px" readonly value="解码器正常">
+        <else />
+            <input type="text" name="flow" style="width:200px" readonly value="解码器无法访问">
+        </if>
+    </td>
+</tr></br>
+<tr>
+    <td><label>出流服务器：</label>
+        <input type="text" name="ping" style="width:200px" readonly value="{$playlist.ping}">
+    </td>
+</tr>
+</body>
+<script src="__PUBLIC__/js/jquery.min.js"></script>
+<script src="__PUBLIC__/js/chosen.jquery.min.js"></script>
+<script src="__PUBLIC__/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript">
+    jQuery(function ($) {
+
+
+    });
+</script>
+</html>

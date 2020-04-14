@@ -1,0 +1,135 @@
+<include file="Public/header" />
+<style>
+	tr{height:50px;}		
+</style>	
+	<body class="no-skin">
+		<!-- #section:basics/navbar.layout -->
+		<div id="navbar" class="navbar navbar-default">
+			<script type="text/javascript">
+				try{ace.settings.check('navbar' , 'fixed')}catch(e){}
+			</script>
+
+			<div class="navbar-container" id="navbar-container">
+				<!-- #section:basics/sidebar.mobile.toggle -->
+				<button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler">
+					<span class="sr-only">Toggle sidebar</span>
+
+					<span class="icon-bar"></span>
+
+					<span class="icon-bar"></span>
+
+					<span class="icon-bar"></span>
+				</button>
+
+				<!-- /section:basics/sidebar.mobile.toggle -->
+				<div class="navbar-header pull-left">
+					<!-- #section:basics/navbar.layout.brand -->
+					<a href="#" class="navbar-brand">
+						<small>
+							中国检察听证网
+						</small>
+					</a>
+					<!-- /section:basics/navbar.layout.brand -->
+				</div>
+<include file="Public/userbar" />
+			</div><!-- /.navbar-container -->
+		</div>
+
+		<!-- /section:basics/navbar.layout -->
+		<div class="main-container" id="main-container">
+			<script type="text/javascript">
+				try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+			</script>
+
+			<!-- #section:basics/sidebar -->
+			<div id="sidebar" class="sidebar responsive">
+				<script type="text/javascript">
+					try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
+				</script>
+
+<include file="Public/menu" />
+
+				<!-- #section:basics/sidebar.layout.minimize -->
+				<div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+					<i class="ace-icon fa fa-angle-double-left" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
+				</div>
+
+				<!-- /section:basics/sidebar.layout.minimize -->
+				<script type="text/javascript">
+					try{ace.settings.check('sidebar' , 'collapsed')}catch(e){}
+				</script>
+			</div>
+
+			<!-- /section:basics/sidebar -->
+			<div class="main-content">
+				<!-- #section:basics/content.breadcrumbs -->
+				<div class="breadcrumbs" id="breadcrumbs">
+					<script type="text/javascript">
+						try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+					</script>
+					<!-- /section:basics/content.searchbox -->
+				</div>
+				<!-- /section:basics/content.breadcrumbs -->
+				<div class="page-content">
+					<div class="page-content-area">
+						<h3 class="header blue smaller lighter">预通占用</h3>
+						<form method="post" action="__GROUP__/Live/timeHandler" >
+							<table width="60%" border="0" cellpadding="2" cellspacing="0" >
+                                                            <input type="hidden" style="width:300px" value="{$arr.a}">
+                                                            <span style="color:red; font-size: 20px">通道占用时间需要大于等于书记员和自动开闭厅时间</span>
+                                                            <tr>
+                                                                <td colspan="3">
+                                                                    <label>通道占用前置时间：</label>
+                                                                        <input type="text" name="stime" style="width:300px" value="{$arr.stime}">分钟
+                                                                </td>
+                                                            </tr>
+                                                            <br/>
+                                                            <tr>
+                                                                <td colspan="3">
+                                                                        <label>通道占用后置时间：</label>
+                                                                        <input type="text" name="etime" style="width:300px" value="{$arr.etime}">分钟
+                                                                </td>
+							</tr>
+                                                        <tr>
+                                                                <td colspan="3">
+                                                                        <label>书记员显示前置时间：</label>
+                                                                        <input type="text" name="mstime" style="width:300px" value="{$arr.Mstime}">分钟
+                                                                </td>
+                                                            </tr>
+                                                            <br/>
+                                                            <tr>
+                                                                <td colspan="3">
+                                                                        <label>书记员显示后置时间：</label>
+                                                                        <input type="text" name="metime" style="width:300px" value="{$arr.Metime}">分钟
+                                                                </td>
+							</tr><tr>
+                                                                <td colspan="3">
+                                                                        <label>自动开庭前置时间：</label>
+                                                                        <input type="text" name="astime" style="width:300px" value="{$arr.Astime}">分钟
+                                                                </td>
+                                                            </tr>
+                                                            <br/>
+                                                            <tr>
+                                                                <td colspan="3">
+                                                                        <label>自动闭庭后置时间：</label>
+                                                                        <input type="text" name="aetime" style="width:300px" value="{$arr.Aetime}">分钟
+                                                                </td>
+							</tr>
+							<tr align="center" style="height:150px">
+								<td colspan="4"><button class="btn btn-info" type="submit"><i class="ace-icon fa fa-check bigger-110"></i>保存</button></td>
+							</tr>
+							
+						</table>
+					</form>
+					</div><!-- /.page-content-area -->
+				</div><!-- /.page-content -->
+			</div><!-- /.main-content -->
+
+<include file="Public/footer" />
+<script src="__PUBLIC__/js/chosen.jquery.min.js"></script>
+<script src="__PUBLIC__/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript">
+    
+</script>
+</body>
+</html>

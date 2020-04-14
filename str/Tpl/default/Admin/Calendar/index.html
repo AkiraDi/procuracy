@@ -1,0 +1,198 @@
+<include file="Public/header" />
+<link rel="stylesheet" href="__PUBLIC__/css/fullcalendar.css" />
+<style>
+    .fc-event-inner {
+        cursor: pointer;
+    }
+</style>
+<body class="no-skin">
+    <!-- #section:basics/navbar.layout -->
+    <div id="navbar" class="navbar navbar-default">
+        <script type="text/javascript">
+            try {
+                ace.settings.check('navbar', 'fixed')
+            } catch (e) {
+            }
+        </script>
+
+        <div class="navbar-container" id="navbar-container">
+            <!-- #section:basics/sidebar.mobile.toggle -->
+            <button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler">
+                <span class="sr-only">Toggle sidebar</span>
+
+                <span class="icon-bar"></span>
+
+                <span class="icon-bar"></span>
+
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- /section:basics/sidebar.mobile.toggle -->
+            <div class="navbar-header pull-left">
+                <!-- #section:basics/navbar.layout.brand -->
+                <a href="#" class="navbar-brand">
+                    <small>
+                        中国检察听证网
+                    </small>
+                </a>
+                <!-- /section:basics/navbar.layout.brand -->
+            </div>
+            <include file="Public/userbar" />
+        </div><!-- /.navbar-container -->
+    </div>
+
+    <!-- /section:basics/navbar.layout -->
+    <div class="main-container" id="main-container">
+        <script type="text/javascript">
+            try {
+                ace.settings.check('main-container', 'fixed')
+            } catch (e) {
+            }
+        </script>
+
+        <!-- #section:basics/sidebar -->
+        <div id="sidebar" class="sidebar responsive">
+            <script type="text/javascript">
+                try {
+                    ace.settings.check('sidebar', 'fixed')
+                } catch (e) {
+                }
+            </script>
+
+            <include file="Public/menu" />
+
+            <!-- #section:basics/sidebar.layout.minimize -->
+            <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+                <i class="ace-icon fa fa-angle-double-left" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
+            </div>
+
+            <!-- /section:basics/sidebar.layout.minimize -->
+            <script type="text/javascript">
+                try {
+                    ace.settings.check('sidebar', 'collapsed')
+                } catch (e) {
+                }
+            </script>
+        </div>
+
+        <!-- /section:basics/sidebar -->
+        <div class="main-content">
+            <!-- #section:basics/content.breadcrumbs -->
+            <div class="breadcrumbs" id="breadcrumbs">
+                <script type="text/javascript">
+                    try {
+                        ace.settings.check('breadcrumbs', 'fixed')
+                    } catch (e) {
+                    }
+                </script>
+                <!-- /section:basics/content.searchbox -->
+            </div>
+            <!-- /section:basics/content.breadcrumbs -->
+            <div class="page-content">
+                <div class="page-content-area">
+                    <div class="col-xs-12" style="padding-bottom: 100px">
+                        <div id="calendar" ></div>
+                    </div>
+                </div><!-- /.page-content-area -->
+                <input type="text" id="P_StartTime" style="width:200px" placeholder="案件起始时间"  onfocus="WdatePicker({dateFmt: 'yyyy-M-d H:mm:ss'})">
+                <input type="text" id="P_EndTime" style="width:200px" placeholder="案件结束时间"  onfocus="WdatePicker({dateFmt: 'yyyy-M-d H:mm:ss'})">
+                <a id="excelExport" href="__GROUP__/Calendar/exportToExcel" target="_blank" class="fm-button ui-state-default ui-corner-all fm-button-icon-left btn btn-sm btn-primary"><i class="ace-icon fa fa-file-excel-o"></i>导出到excel</a>
+                <p></p>
+                <if condition="$admin">
+                    <form id="form1" method="post" enctype="multipart/form-data" action="__GROUP__/Calendar/importExcel" target="_blank">
+                        <input type="file" name="file" id="file" class="ace-file-input" style="display: inline;" />
+                        <button type="submit" class="fm-button ui-state-default ui-corner-all fm-button-icon-left btn btn-sm btn-success">
+                            <i class="ace-icon fa fa-file-excel-o"></i>导入execl
+                        </button>
+                    </form>
+                </if>						
+            </div><!-- /.page-content -->
+        </div><!-- /.main-content -->
+        <include file="Public/footer" />
+        <script src="__PUBLIC__/js/date-time/moment.min.js"></script>
+        <script src="__PUBLIC__/js/fullcalendar.min.js"></script>
+        <script src="__PUBLIC__/My97DatePicker/WdatePicker.js"></script>
+        <script type="text/javascript">
+                                            var date = new Date();
+                                            var d = date.getDate();
+                                            var m = date.getMonth();
+                                            var y = date.getFullYear();
+                                            var href = $('#excelExport').attr('href');
+                                            jQuery(function($) {
+                                                //导出到excel
+                                                $("#excelExport").bind("click", function() {
+                                                    if (($("#P_StartTime").val() == '') || $("#P_EndTime").val() == '') {
+                                                        layer.alert("请选择导出的时间段！");
+                                                        return false;
+                                                    } else {
+                                                        var Chref = href + "?P_StartTime=" + $("#P_StartTime").val() + "&P_EndTime=" + $("#P_EndTime").val();
+                                                        $(this).attr('href', Chref);
+                                                    }
+                                                });
+                                                $('#calendar').fullCalendar({
+                                                    header: {
+                                                        left: 'agendaWeek,month',
+                                                        center: 'title',
+                                                        right: 'prev,next today',
+                                                    },
+                                                    defaultView: 'agendaWeek',
+                                                    allDaySlot: false, //在agenda视图模式下，是否在日历上方显示all-day(全天)
+                                                    axisFormat: 'H:mm', //设置日历agenda视图下左侧的时间显示格式，默认显示如：5:30pm	'h(:mm)tt'
+                                                    titleFormat: "YYYY年MM月",
+                                                    timeFormat: "HH:mm",
+                                                    firstDay: 1,
+                                                    monthNames: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                                                    dayNamesShort: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
+                                                    buttonText: {
+                                                        today: '今天',
+                                                        month: '月',
+                                                        week: '周',
+                                                        day: '日',
+                                                        prev: '上一页',
+                                                        next: '下一页'
+                                                    },
+                                                    events: function(start, end, timezone, callback) {
+                                                        $.ajax({
+                                                            url: '__ROOT__/index.php/Calendar/getTasks',
+                                                            dataType: 'json',
+                                                            data: {
+                                                                // our hypothetical feed requires UNIX timestamps
+                                                                start: start.unix(),
+                                                                end: end.unix()
+                                                            },
+                                                            success: function(data) {
+                                                                /* $(doc).find('event').each(function() {
+                                                                 events.push({
+                                                                 title: $(this).attr('title'),
+                                                                 start: $(this).attr('start') // will be parsed
+                                                                 });
+                                                                 }); */
+                                                                //alert(events);
+                                                                callback(data);
+                                                            }
+                                                        });
+                                                    },
+                                                    eventClick: function(event) {
+                                                        //alert(event.id);
+                                                        var id = event.id;
+                                                        var title = event.title;
+                                                        if (event.contact) {
+                                                            title += "&nbsp&nbsp&nbsp&nbsp&nbsp(联系方式:" + event.contact + ")"
+                                                        }
+                                                        var index = layer.open({
+                                                            type: 2,
+                                                            title: title,
+                                                            content: '__ROOT__/index.php/Calendar/checkTask?P_ID=' + id,
+                                                            area: ['900px', '600px'],
+                                                        });
+                                                    }
+                                                });
+
+                                                //绑定【本月】【下一月】【上一月】触发事件
+                                                $('.fc-button-prev').bind('click', updateEvent);
+                                                $('.fc-button-next').bind('click', updateEvent);
+                                                $('.fc-button-today').bind('click', updateEvent);
+                                            });
+        </script>
+</body>
+</html>

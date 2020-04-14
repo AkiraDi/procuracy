@@ -1,0 +1,174 @@
+<include file="Public/header" />
+	<body class="no-skin">
+		<!-- #section:basics/navbar.layout -->
+		<div id="navbar" class="navbar navbar-default">
+			<script type="text/javascript">
+				try{ace.settings.check('navbar' , 'fixed')}catch(e){}
+			</script>
+
+			<div class="navbar-container" id="navbar-container">
+				<!-- #section:basics/sidebar.mobile.toggle -->
+				<button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler">
+					<span class="sr-only">Toggle sidebar</span>
+
+					<span class="icon-bar"></span>
+
+					<span class="icon-bar"></span>
+
+					<span class="icon-bar"></span>
+				</button>
+
+				<!-- /section:basics/sidebar.mobile.toggle -->
+				<div class="navbar-header pull-left">
+					<!-- #section:basics/navbar.layout.brand -->
+					<a href="#" class="navbar-brand">
+						<small>
+							中国检察听证网
+						</small>
+					</a>
+					<!-- /section:basics/navbar.layout.brand -->
+				</div>
+<include file="Public/userbar" />
+			</div><!-- /.navbar-container -->
+		</div>
+
+		<!-- /section:basics/navbar.layout -->
+		<div class="main-container" id="main-container">
+			<script type="text/javascript">
+				try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+			</script>
+
+			<!-- #section:basics/sidebar -->
+			<div id="sidebar" class="sidebar responsive">
+				<script type="text/javascript">
+					try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
+				</script>
+
+<include file="Public/menu" />
+
+				<!-- #section:basics/sidebar.layout.minimize -->
+				<div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+					<i class="ace-icon fa fa-angle-double-left" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
+				</div>
+
+				<!-- /section:basics/sidebar.layout.minimize -->
+				<script type="text/javascript">
+					try{ace.settings.check('sidebar' , 'collapsed')}catch(e){}
+				</script>
+			</div>
+
+			<!-- /section:basics/sidebar -->
+			<div class="main-content">
+				<!-- #section:basics/content.breadcrumbs -->
+				<div class="breadcrumbs" id="breadcrumbs">
+					<script type="text/javascript">
+						try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+					</script>
+					<!-- /section:basics/content.searchbox -->
+				</div>
+				<!-- /section:basics/content.breadcrumbs -->
+				<div class="page-content">
+					<div class="page-content-area">
+						<div class="row">
+							<div class="col-xs-12">
+								<!-- PAGE CONTENT BEGINS -->
+					<div class="row">
+						<div class="col-xs-12">
+							<div class="table-header">
+								<i class="ace-icon fa fa-table"></i>&nbsp&nbsp失败原因列表
+							</div>
+							<!-- <div class="dataTables_borderWrap"> -->
+							<div>
+								<table id="table1" class="table table-striped table-bordered table-hover">
+										<a href="#" class="btn btn-link"><i class="ace-icon fa fa-plus-circle bigger-120 green"></i>添加失败原因</a>
+										<thead>
+											<tr>
+												<th>失败原因</th>
+												<th>操作</th>
+											</tr>
+										</thead>
+										<tbody>
+										<volist name='reason' id='vo'>
+											<tr>			
+												<td>{$vo.F_Reason}</td>
+												<td width="15%">
+													<button class="btn btn-xs btn-success" id={$vo.F_ID}>
+														<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
+														编辑
+													</button>
+													<button class="btn btn-xs btn-danger" id={$vo.F_ID}>
+														<i class="ace-icon fa fa-trash-o bigger-120"></i>
+														删除
+													</button>
+												</td>
+											</tr>
+										</volist>
+									</tbody>
+								</table>
+							</div><!-- end<div class="dataTables_borderWrap"> -->
+						</div><!-- end col -->
+					</div><!-- end row -->
+									
+								<!-- PAGE CONTENT ENDS -->
+							</div><!-- /.col -->
+						</div><!-- /.row -->
+					</div><!-- /.page-content-area -->
+				</div><!-- /.page-content -->
+			</div><!-- /.main-content -->
+
+<include file="Public/footer" />
+	<script type="text/javascript">
+		jQuery(function($){
+			$('#table1').dataTable({
+				stateSave: true,//保存表格状态
+				language:{
+		            "url": "/Public/font/zh_CN.txt"
+		    	}
+			});
+			
+			//新增
+			$("a[class='btn btn-link']").click(function(){
+				var index = layer.open({
+				    type: 2,
+				    title:"添加失败原因",
+				    content: '/index.php/System/addFailedreason',
+				    area: ['600px', '200px'],
+				});
+			});
+			
+			//编辑
+			$("button[class='btn btn-xs btn-success']").click(function(){
+				var id=$(this).attr('id');
+				var index = layer.open({
+				    type: 2,
+				    title:"失败原因编辑",
+				    content: '/index.php/System/editFailedreason?id='+id,
+				    area: ['600px', '500px'],
+				});
+			});
+			
+			//删除检察院
+			$("button[class='btn btn-xs btn-danger']").click(function(){
+				var id=$(this).attr('id');
+				layer.confirm('是否删除该失败原因?', {icon: 3, title:'提示'}, function(index){
+					$.ajax({
+						url: '/index.php/System/delFailedreasonHandler?id='+id,
+						dataType: 'json',
+						type: 'GET',
+						success: function(msg) {
+							if(!msg.status){
+								//删除失败
+								layer.alert(msg.info, {icon: 2},function(index){location.reload();}); 
+							}else{
+								//删除成功
+								layer.alert(msg.info, {icon: 1},function(index){location.reload();}); 
+							}
+						}
+					});
+				});
+			});
+				
+		});
+		</script>
+	</body>
+</html>

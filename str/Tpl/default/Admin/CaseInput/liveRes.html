@@ -1,0 +1,170 @@
+<include file="Public/header" />
+<style>
+    tr{height:50px;}	
+    #cover{ 
+        display:none; 
+        position:fixed; 
+        z-index:1; 
+        top:0; 
+        left:0; 
+        width:100%; 
+        height:100%; 
+        background:rgba(0, 0, 0, 0.44); 
+    } 
+    #coverShow{ 
+        display:none; 
+        position:fixed; 
+        z-index:2; 
+        top:50%; 
+        left:50%; 
+        border:1px solid #127386; 
+        width:300px; 
+        height:100px; 
+        margin-left:-150px; 
+        margin-top:-150px; 
+        background:#127386; 
+    } 
+</style>
+<body style="background-color:white;padding:15px;font-size:16px">
+    <div id="cover"></div> 
+    <div id="coverShow"> 
+        <table align="center" border="0" width="100%" cellspacing="0" cellpadding="0" style="border-collapse: collapse; height: 100px; min-height: 100px;" bgcolor="#fff">
+            <tr> 
+                <td align="center" bgcolor="#ffffff"> 
+                    正在请求，请稍后......<br/>
+                    <img src="/Public/img/loading.gif"/>
+                </td> 
+            </tr> 
+        </table> 
+    </div>  
+    <form method="post" action="__GROUP__/CaseInput/liveResHandler" id="form1">
+        <div class="page-header">
+            <h1>直播资源详情</h1>
+        </div><!-- /.page-header -->
+        <table width="100%" border="0" cellpadding="2" cellspacing="0">
+            <tr>
+                <td colspan="3">
+                    <label>入流检察院：</label>
+                    <select class="chosen-select" id="selectCourt1" data-placeholder="检察院名称..."  name="P_CourtIn" style="width:300px;">
+                        <option value="">  </option>
+                        <volist name="courts" id="vo">
+                            <option value={$vo.C_ID}>{$vo.C_Name}</option>
+                        </volist>																					
+                    </select>
+                </td>
+                <td colspan="3">
+                    <label>入流听证室：</label>
+                    <select class="chosen-select" id="selectCourtRoom" data-placeholder="听证室名称..." name="P_CourtRoomIn" style="width:300px;">
+                    </select>
+                </td>
+            </tr>
+             <tr>
+                    <td colspan="4">
+                            <label>是否选择需审核的通道</label>
+                            <input name="P_IsConfig" type="radio" class="ace" value=1 ><span class="lbl">是</span>
+                            <input name="P_IsConfig" type="radio" class="ace" value=2 checked="checked"><span class="lbl">否</span>
+                            
+                    <td colspan="2">
+                            <label>是否需要证人保护</label>
+                            <input name="P_IsProtect" type="radio" class="ace" value=1 ><span class="lbl">是</span>
+                            <input name="P_IsProtect" type="radio" class="ace" value=2 checked="checked"><span class="lbl">否</span>
+                   
+            </tr> 
+<!--            <tr>
+                <td colspan="3"><label>联系方式：</label><input type="text" name="P_RequestContact"  style="width:300px" /></td>
+                 <td colspan="3"><label>解码器号：</label><input type="text" id="Decoder1" style="width:300px" disabled="disabled"></td> 
+            </tr>-->
+            <tr align="center" style="height:90px">
+                <td colspan="1"></td>
+                <td colspan="1"><button class="btn btn-info" type="submit" id="btn" disabled="disabled" onClick='javascript:return coverit();'><i class="ace-icon fa fa-check bigger-110"></i>确定</button></td>
+                <td colspan="1"><button class="btn" type="button"><i class="ace-icon fa fa-times bigger-110"></i>关闭</button></td>
+                <!--<td colspan="2"></td>-->
+            </tr>
+        </table>
+        <input type="hidden" name="P_ID"  id="PID" value="{$_GET['P_ID']}" />
+        <input type="hidden" name="P_STime"  id="PID" value="{$playlist['P_STime']}" />
+        <input type="hidden" name="P_ETime"  id="PID" value="{$playlist['P_ETime']}" />
+        <input type="hidden" name="P_StartTime"  id="P_StartTime" value="{$playlist['P_StartTime']}" />
+        <input type="hidden" name="P_EndTime"  id="P_EndTime" value="{$playlist['P_EndTime']}" />
+    </form>
+    <script src="__PUBLIC__/js/jquery.min.js"></script>
+    <script src="__PUBLIC__/js/chosen.jquery.min.js"></script>
+    <script src="__PUBLIC__/My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript">
+        
+        function coverit()
+        {
+            var cover = document.getElementById("cover");
+            var covershow = document.getElementById("coverShow");
+            cover.style.display = 'block';
+            covershow.style.display = 'block';
+            setTimeout("showTime()", 30000);
+            return true;
+        }
+        function showTime() {
+            var cover = document.getElementById("cover");
+            var covershow = document.getElementById("coverShow");
+            cover.style.display = '';
+            covershow.style.display = '';
+
+        }
+            
+        $("#btn").attr("disabled","true");
+        $("#btn").attr("disabled","disabled");
+        $("#btn").attr("disabled","false");
+        $("#btn").removeAttr("disabled","disabled");
+
+        
+        jQuery(function ($) {
+            //清空检察院
+            $('#selectCourt1').prop('selectedIndex', 0);
+            //选择入流检察院时，查询该检察院所有的听证室，填入听证室select
+            $('#selectCourt1').change(function () {
+                $("#selectCourtRoom").chosen("destroy");
+                var courtId = $(this).val();
+                $.ajax({
+                    url: '/index.php/ApplyTask/searchCourtRoom?C_ID=' + courtId,
+                    dataType: 'json',
+                    type: 'GET',
+                    async: false,
+                    success: function (msg) {
+                        //删除所有option
+                        $("#selectCourtRoom  option").remove();
+                        $("#selectCourtRoom").append("<option value=''>  </option>");
+                        for (i = 0; i < msg.data.length; i++) {
+                            //循环插入option
+                            $("#selectCourtRoom").append("<option value='" + msg.data[i].CR_ID + "'>[" + msg.data[i].CR_Name + "]  " + msg.data[i].CR_URL + "  端口:" + msg.data[i].CR_Port + "</option>");
+                        }
+                    }
+                });
+                $("#selectCourtRoom").chosen();
+            });
+
+            //选择出流检察院时，查询PID
+            $('#selectCourt2').change(function () {
+                var L_ID = $(this).val();
+                $.ajax({
+                    url: '/index.php/ApplyTask/searchOutPID?L_ID=' + L_ID,
+                    dataType: 'json',
+                    type: 'GET',
+                    async: false,
+                    success: function (msg) {
+                        $("#PID1,#PID2").val(msg.data.L_PID);
+                        $("#P_CourtOut").val(msg.data.L_CourtName);
+                        $("#Decoder1,#Decoder2").val(msg.data.L_Decoder);
+                    }
+                });
+            });
+
+            $('.chosen-select').chosen();
+
+            //关闭
+            $("button[class='btn']").click(function () {
+                var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                parent.layer.close(index); //再执行关闭     
+            });
+            
+        });
+    </script>
+</body>
+</html>

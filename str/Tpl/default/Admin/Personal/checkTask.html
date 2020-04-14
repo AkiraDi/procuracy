@@ -1,0 +1,42 @@
+<include file="Public/header" />
+<link rel="stylesheet" href="__PUBLIC__/css/chosen.css" />
+<style>
+	tr{height:50px;}		
+</style>		
+<body style="background-color:white;padding:15px;font-size:16px">
+	<table width="100%" border="0" cellpadding="2" cellspacing="0">
+		<tr>
+			<td><label>日志编号：</label><input type="text" style="width:185px" disabled="disabled" value="{$log.L_ID}" ></td>
+                        <td><label>操作人：</label><input type="text" style="width:185px" disabled="disabled" value="({$log.L_Man}){$log.M_Name}" ></td>
+		</tr>
+		<tr>
+			<td><label>名称：</label><input type="text" style="width:185px" disabled="disabled" value="{$log.L_Type}" ></td>
+			<td><label>时间：</label><input type="text" style="width:185px" disabled="disabled" value="{$log.L_DateTime}" ></td>
+		</tr>
+                
+		<tr>
+			<td colspan="3"><label>详情：</label><textarea class="form-control" id="form-field-8" rows="5"  style="height: 190px;">{$log.L_Detail}</textarea></td>
+		</tr>
+	</table>
+	<br>
+	<table width="100%" border="0" cellpadding="2" cellspacing="0">
+		
+		<tr align="center" style="height:90px">
+			<td colspan="2"></td>
+			<td colspan="2"><button class="btn btn-info" type="button"><i class="ace-icon fa fa-times bigger-110"></i>关闭</button></td>
+			<td colspan="2"></td>
+		</tr>
+	</table>
+</body>
+<script src="__PUBLIC__/js/jquery.min.js"></script>
+<script src="__PUBLIC__/js/chosen.jquery.min.js"></script>
+<script src="__PUBLIC__/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript">
+	jQuery(function($){
+		$("button[class='btn btn-info']").click(function(){
+			var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+			parent.layer.close(index); //再执行关闭     
+		});
+	});
+</script>
+</html>

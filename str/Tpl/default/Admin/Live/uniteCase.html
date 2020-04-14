@@ -1,0 +1,87 @@
+<include file="Public/header" />
+<body class="no-skin" style="background-color: white;">
+    <!--<br>-->
+<!--    <form class="nav-search" id="nav-search" method="post" action="__GROUP__/Public/searchPlaylist">
+        <p>
+            <input type="hidden" name="isSearch" value="1" />
+            <input type="text" placeholder="开始时间" name="startTime" onclick="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm:ss'})" value="{$startTime}" />
+            <input type="text" placeholder="结束时间" name="endTime" onclick="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm:ss'})" value="{$endTime}"  />
+            <button type="submit" class="btn btn-success btn-sm">查询<i class="ace-icon fa fa-search icon-on-right bigger-110"></i></button>
+        </p>
+    </form>-->
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="table-header">
+                <i class="ace-icon fa fa-table"></i>&nbsp&nbsp查询结果
+            </div>
+            <!-- <div class="dataTables_borderWrap"> -->
+            <div>
+                <table id="table1" class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>开始时间</th>
+                            <th>结束时间</th>
+                            <th>解码器</th>
+                            <th>PID</th>
+                            <th>案件名称</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <volist name="playlist" id="vo">
+                        <tr>
+                            <td>{$vo.P_StartTime}</td>
+                            <td>{$vo.P_EndTime}</td>
+                            <td>{$vo.P_Decoder}</td>
+                            <td>{$vo.P_OutPID}</td>
+                            <td>{$vo.P_CaseName}</td>
+                            <td><button type="submit" class="btn btn-success"  onclick="media('{$pid}', '{$vo.P_REID}')">合并</button></td>
+                        </tr>
+                    </volist>
+                    </tbody>
+                </table>
+            </div><!-- end<div class="dataTables_borderWrap"> -->
+        </div><!-- end col -->
+    </div><!-- end row -->
+    <script src="__PUBLIC__/js/jquery.min.js"></script>
+    <script src="__PUBLIC__/js/bootstrap.min.js"></script>
+
+    <!-- page specific plugin scripts -->
+    <script src="__PUBLIC__/js/jquery.dataTables.min.js"></script>
+    <script src="__PUBLIC__/js/jquery.dataTables.bootstrap.js"></script>
+
+    <!-- ace scripts -->
+    <script src="__PUBLIC__/js/ace-elements.min.js"></script>
+    <script src="__PUBLIC__/js/ace.min.js"></script>
+    <script src="__PUBLIC__/layer/layer.js"></script>
+    <script src="__PUBLIC__/laypage/laypage.js"></script>
+    <script src="/Public/My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript">
+    jQuery(function ($) {
+        $('#table1').dataTable({
+            stateSave: false, //保存表格状态
+            lengthMenu: [8],
+            language: {
+                "url": "/Public/font/zh_CN.txt"
+            }
+        });
+
+        
+    });
+    
+    function media(pid,P_REID){
+        $.ajax({
+            url: '/index.php/Live/unite_handler?pid='+pid+'&P_REID='+P_REID,
+            dataType: 'json',
+            type: 'GET',
+            async: false,
+            success: function (msg) {
+                layer.alert(msg.info, {icon: 1}, function (index) {
+                location.reload();
+                });
+            }
+        });
+    }
+    </script>
+</body>
+</html>

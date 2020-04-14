@@ -1,0 +1,14 @@
+<include file="Public/header" />
+<body style="padding:10px;">
+	<form method="post" action="__GROUP__/VerifyTask/verifyTaskHandler">
+		<textarea class="form-control" id="form-field-8" placeholder="填写不通过原因" rows=5 name="P_ApplyReason"></textarea>
+		<br>
+		<p style="text-align: center;">
+			<button class="btn btn-sm btn-info" type="submit"><i class="ace-icon fa fa-check"></i>确定</button>
+		</p>
+		<input type="hidden" name="noPass" value=1 />
+		<input type="hidden" name="P_ID" value="{$P_ID}" />
+		<input type="hidden" name="P_ApplyStatus" value=3 />
+	</form>
+</body>
+</html>

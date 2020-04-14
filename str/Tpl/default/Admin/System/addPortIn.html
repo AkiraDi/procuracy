@@ -1,0 +1,51 @@
+<include file="Public/header" />
+<style>
+	tr{height:50px;}		
+</style>		
+<body style="background-color:white;padding:10px;font-size:16px">
+	<form method="post" action="__GROUP__/System/addPortInHandler" >
+	<div class="page-header">
+		<h1>听证室信息</h1>
+	</div><!-- /.page-header -->
+	<table width="100%" border="0" cellpadding="2" cellspacing="0">
+		<tr>
+			<td><label>听证室名称：</label><input type="text"  name="CR_Name" style="width:200px"></td>
+			<td>
+				<label>所属检察院：</label>
+				<select class="chosen-select" id="form-field-1" data-placeholder="所属检察院..."  name="CR_Belongs" style="width:200px;">
+					<option value="">  </option>
+					<volist name="courts" id="vo">
+						<option value={$vo.C_ID}>{$vo.C_Name}</option>
+					</volist>												
+				</select>
+			</td>
+		</tr>
+<!--		<tr>
+			<td><label>直播流地址：</label><input type="text"  name="CR_URL" style="width:200px"></td>
+			<td><label>端口：</label><input type="text" name="CR_Port" style="width:200px"></td>
+		</tr>-->
+		<tr>
+			<td colspan="2"><label>备注：</label><textarea class="form-control"  name="CR_Comment" id="form-field-8" rows="2"></textarea></td>
+		</tr>
+		<tr align="center" style="height:90px">
+			<td colspan="2">
+				<button class="btn btn-info" type="submit"><i class="ace-icon fa fa-check bigger-110"></i>保存</button>
+				&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+				<button class="btn" type="reset"><i class="ace-icon fa fa-undo bigger-110"></i>重置</button>
+			</td>
+		</tr>
+	</table>
+	<input type="hidden" name="CR_Get" value="" />
+	</form>
+</body>
+<script src="__PUBLIC__/js/jquery.min.js"></script>
+<script src="__PUBLIC__/js/chosen.jquery.min.js"></script>
+<script src="__PUBLIC__/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript">
+	jQuery(function($){
+		$('.chosen-select').chosen({allow_single_deselect:true}); 
+		//重置表单
+		$('#form1')[0].reset();
+	});
+</script>
+</html>

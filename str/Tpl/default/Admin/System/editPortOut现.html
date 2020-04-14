@@ -1,0 +1,143 @@
+<include file="Public/header" />
+<style>
+	tr{height:50px;}		
+</style>		
+<body style="background-color:white;padding:10px;font-size:16px">
+	<form method="post" action="__GROUP__/System/editPortOutHandler" >
+	<div class="page-header">
+		<h1>直播资源出流信息</h1>
+	</div><!-- /.page-header -->
+	<table width="100%" border="0" cellpadding="2" cellspacing="0">
+		<tr>
+		    <td colspan="2"><label>直播通道编号  ：&nbsp;&nbsp;{$live.L_ID}</label></td>
+		
+			<td><label>直播流地址：</label><input type="text" name="L_URL" style="width:200px" value={$live.L_URL}></td>
+			
+		</tr>
+		<tr>
+	     	<td colspan="2"><label>端口：</label><input type="text" name="L_Port" style="width:180px" value={$live.L_Port}></td>
+			<td>
+				<label>所 属 法 院：</label>
+				<select class="chosen-select" id="select1" data-placeholder="所属检察院..." name="L_CourtName" style="width:200px;">
+					<option value="">  </option>
+					<option value="">无</option>
+					<volist name="courts" id="vo">
+						<option value={$vo.C_ID}>{$vo.C_Name}</option>
+					</volist>
+				</select>		
+			</td>
+			
+		</tr>
+		<tr>
+	    	<td  colspan="2"><label>P I D：</label><input type="text" name="L_PID" style="width:180px" value="{$live.L_PID}"></td>
+			<td>
+			<label>解 码 器 号：</label>
+				<select class="chosen-select" id="select3" data-placeholder="解码器号..."  name="L_Decoder" style="width:200px;">
+					<option value="">  </option>
+					<option value="1"> 1 (http://139.1.1.89:8800)</option>
+					<option value="2"> 2 (http://139.1.1.91:8800)</option>
+					<option value="6"> 6 (http://139.1.1.86:8800)</option><!--2018.3.5添加新的解码器 -->  
+				</select>
+				<input type="hidden" id="L_Decoder" value="{$live.L_Decoder}" />
+			</td>
+		
+
+
+		</tr>
+		<tr>
+		    <td colspan="2">
+				<label>复用通道号：</label>
+				<select class="chosen-select" id="select2" data-placeholder="复用通道号..."  name="L_Channel" style="width:135px;">
+					<option value="">  </option>
+					<option value="1"> 1 </option>
+					<option value="2"> 2 </option>
+					<option value="3"> 3  </option>
+					<option value="4"> 4 </option>
+				</select>
+				<input type="hidden" id="L_Channel" value="{$live.L_Channel}" />
+			</td>
+
+			<td colspan="2">
+				<label>是否永久使用：</label>
+					<input name="L_IfAlways" type="radio" class="ace" value=1 id='c1'><span class="lbl">是</span>
+					<input name="L_IfAlways" type="radio" class="ace" value=0 id='c2'><span class="lbl">否</span>
+			</td>
+		</tr>
+                
+                <tr>
+                    <td colspan="2">
+                            <label>是否公共使用：</label>
+                            <input type="hidden" id="L_Check" value={$live.L_Check} />
+                            <input name="L_Check" type="radio" class="ace" value=2 id="check2"><span class="lbl">是</span>
+                            <input name="L_Check" type="radio" class="ace" value=1 id="check1"><span class="lbl">否</span>
+                    </td>
+                </tr>
+		<tr class="time" style="display: none">
+			<td><label>开始时间：</label><input type="text" name="L_StartDate" style="width:150px" value={$live.L_StartDate} onfocus="WdatePicker({skin:'whyGreen',dateFmt:'yyyy-M-d'})"></td>
+			<td><label>结束时间：</label><input type="text" name="L_EndDate" style="width:150px" value={$live.L_EndDate} onfocus="WdatePicker({skin:'whyGreen',dateFmt:'yyyy-M-d'})"></td>
+		</tr>
+		<tr>
+			<td colspan="3"><label>出流描述：</label><textarea class="form-control"  name="L_Comment" id="form-field-8" rows="2">{$live.L_Comment}</textarea></td>
+		</tr>
+		<tr align="center" style="height:90px">
+			<td colspan="3">
+				<button class="btn btn-info" type="submit"><i class="ace-icon fa fa-check bigger-110"></i>保存</button>
+				&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+				<button class="btn" type="reset"><i class="ace-icon fa fa-undo bigger-110"></i>重置</button>
+			</td>
+		</tr>
+	</table>
+	<input type="hidden" name="L_ID" value={$live.L_ID} />
+	</form>
+	<input type="hidden" id="L_CourtName" value="{$live.L_CourtName}" />
+	<input type="hidden" id="L_IfAlways" value={$live.L_IfAlways} />
+</body>
+<script src="__PUBLIC__/js/jquery.min.js"></script>
+<script src="__PUBLIC__/js/chosen.jquery.min.js"></script>
+<script src="__PUBLIC__/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript">
+	jQuery(function($){
+		//下拉框选择
+		$("#select1").find("option[value='"+$("#L_CourtName").val()+"']").attr("selected","selected");
+		//通道下拉框选择
+		$("#select2").find("option[value='"+$("#L_Channel").val()+"']").attr("selected","selected");
+		$("#select3").find("option[value='"+$("#L_Decoder").val()+"']").attr("selected","selected");
+		$('.chosen-select').chosen({allow_single_deselect:true}); 
+		
+		//判断是否显示开始时间，结束时间
+		if($("#L_IfAlways").val()==0){
+			//如果不是永久使用，显示开始结束时间，选中否
+			$(".time").slideDown();
+			$("#c2").attr("checked","checked");
+		}else if($("#L_IfAlways").val()==1){
+			$("#c1").attr("checked","checked");
+		}
+                
+		if($("#L_Check").val()==2){
+			$("#check2").attr("checked","checked");
+		}else if($("#L_Check").val()==1){
+			$("#check1").attr("checked","checked");
+		}
+		
+		//绑定选择是永久用户时清空时间
+		$("input[name='L_IfAlways'],[value=1]").click(function(){
+			//清空时间
+			$("input[name='L_StartDate']").val("");
+			$("input[name='L_EndDate']").val("");
+		});
+		
+		//永久使用判断是否显示开始时间，结束时间
+		$('input:radio[name="L_IfAlways"]').change(function(){
+			//永久使用，隐藏时间选项
+			if($('input:radio[name="L_IfAlways"]:checked').val()==1){
+				$(".time").slideUp();
+			//显示时间显示
+			}else{
+				$(".time").slideDown();
+			}
+		});
+		
+		
+	});
+</script>
+</html>

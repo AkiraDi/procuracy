@@ -1,0 +1,59 @@
+<include file="Public/header" />
+<style>
+    tr{height:50px;}		
+</style>		
+<body style="background-color:white;padding:15px;font-size:16px">
+    <form method="post" action="__GROUP__/Live/outLiveHandler" >
+        <table width="60%" border="0" cellpadding="2" cellspacing="0" >
+            <input type="hidden" name="P_ID"  value="{$PID}" />
+            <tr>
+                <td colspan="6">
+                    <label>出流：</label>
+                    <select class="chosen-select" id="selectCourt2" data-placeholder="检察院名称..." name="P_CourtOut" style="width:250px;">
+                        <option value="">  </option>
+                        <volist name="live" id="vo">
+                            <option value={$vo.L_PID}>{$vo.C_Name}({$vo.L_Comment})</option>
+                        </volist>												
+                    </select>
+                </td>
+            </tr>
+            <tr align="center" style="height:150px">
+                <td colspan="6"><button class="btn btn-info" type="submit"><i class="ace-icon fa fa-check bigger-110"></i>手动切换</button></td>
+            </tr>
+        </table>
+    </form>
+</body>
+<script src="__PUBLIC__/js/jquery.min.js"></script>
+<script src="__PUBLIC__/js/chosen.jquery.min.js"></script>
+<script src="__PUBLIC__/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript">
+    jQuery(function ($) {
+        //清空检察院
+		$('#selectCourt1').prop('selectedIndex', 0);
+		//选择入流检察院时，查询该检察院所有的听证室，填入听证室select
+		 $('#selectCourt1').change(function(){
+			$("#selectCourtRoom").chosen("destroy"); 
+			var courtId=$(this).val();
+			$.ajax({
+				url: '/index.php/ApplyTask/searchCourtRoom?C_ID='+courtId,
+				dataType: 'json',
+				type: 'GET',
+				async: false,
+				success: function(msg) {
+					//删除所有option
+					$("#selectCourtRoom  option").remove();
+					$("#selectCourtRoom").append("<option value=''>  </option>");
+					for(i=0;i<msg.data.length;i++){
+						//循环插入option
+						$("#selectCourtRoom").append("<option value='"+msg.data[i].CR_ID+"'>["+msg.data[i].CR_Name+"]  "+msg.data[i].CR_URL+"  端口:"+msg.data[i].CR_Port+"</option>");
+					}
+				}
+			});
+			$("#selectCourtRoom").chosen();
+		});
+		
+		$('.chosen-select').chosen({allow_single_deselect:true}); 
+
+    });
+</script>
+</html>

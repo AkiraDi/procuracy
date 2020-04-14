@@ -1,0 +1,109 @@
+<include file="Public/header" />
+<style>
+    tr{height:50px;}		
+    lable{width:100px;}
+</style>		
+<body style="background-color:white;padding:10px;font-size:16px">
+    <form method="post" action="__GROUP__/RBAC/addUserHandler" id="form1">
+        <div class="page-header">
+            <h1>人员信息</h1>
+        </div><!-- /.page-header -->
+        <table width="100%" border="0" cellpadding="2" cellspacing="0">
+            <tr>
+                <td colspan="1"><label>用户名：</label><input type="text" name="M_Name" style="width:250px"></td>
+                <td colspan="1"><label>密码：</label><input type="password" name="M_Password" style="width:250px"></td>
+            </tr>
+            <tr>
+                <td><label>真实姓名：</label><input type="text" name="M_RealName" style="width:200px"></td>
+                <td><label>联系电话：</label><input type="text" name="M_Phone" style="width:200px"></td>
+            </tr>
+            <tr>
+                <td><label>邮箱：</label><input type="text" name="M_Mail" style="width:200px"></td>
+                <td><label>传真：</label><input type="text" name="M_Fax" style="width:200px"></td>
+            </tr>
+            <tr>			
+                <td>
+                    <label>状态：</label>
+                    <input name="M_IfUse" type="radio" class="ace" value=1 checked="checked"><span class="lbl">开通</span>
+                    <input name="M_IfUse" type="radio" class="ace" value=0><span class="lbl">禁用</span>
+                </td>
+                <td>
+                    <label>是否为听证室账户：</label>
+                    <input name="IfRoom" type="radio" class="ace" value=1 ><span class="lbl">是</span>
+                    <input name="IfRoom" type="radio" class="ace" value=2 checked="checked"><span class="lbl">否</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label><span style='color:red;'>*</span>检察院名称：</label>
+                    <select class="chosen-select" id="selectCourt1" data-placeholder="检察院名称..."  name="M_Court" style="width:200px;">
+                        <option value="">  </option>
+                        <volist name="courts" id="vo">
+                            <option value={$vo.C_ID}>{$vo.C_Name}</option>
+                        </volist>																					
+                    </select>
+                </td>
+                <td class="house">
+                    <label><span style='color:red;'>*</span>听证室名称：</label>
+                    <select class="chosen-select" id="selectCourtRoom" data-placeholder="听证室名称..." name="M_CourtRoom" style="width:200px;">
+                    </select>
+                </td>
+            </tr>
+            <tr align="center" style="height:90px">
+                <td colspan="2">
+                    <button class="btn btn-info" type="submit"><i class="ace-icon fa fa-check bigger-110"></i>保存</button>
+                    &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                    <button class="btn" type="reset"><i class="ace-icon fa fa-undo bigger-110"></i>重置</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</body>
+<script src="__PUBLIC__/js/jquery.min.js"></script>
+<script src="__PUBLIC__/js/chosen.jquery.min.js"></script>
+<script src="__PUBLIC__/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript">
+    jQuery(function($) {
+        $(".house").hide();
+        
+        //永久使用判断是否显示开始时间，结束时间
+        $('input:radio[name="IfRoom"]').change(function() {
+            //永久使用，隐藏时间选项
+            if ($('input:radio[name="IfRoom"]:checked').val() == 1) {
+                $("#selectCourtRoom_chosen").width('200px');
+                $(".house").show();
+                //显示时间显示
+            } else {
+                $(".house").hide();
+            }
+        });
+        $('.chosen-select').chosen({allow_single_deselect: true});
+        //重置表单
+        $('#form1')[0].reset();
+
+        //清空检察院
+        $('#selectCourt1').prop('selectedIndex', 0);
+        //选择入流检察院时，查询该检察院所有的听证室，填入听证室select
+        $('#selectCourt1').change(function() {
+            $("#selectCourtRoom").chosen("destroy");
+            var courtId = $(this).val();
+            $.ajax({
+                url: '/index.php/ApplyTask/searchCourtRoom?C_ID=' + courtId,
+                dataType: 'json',
+                type: 'GET',
+                async: false,
+                success: function(msg) {
+                    //删除所有option
+                    $("#selectCourtRoom  option").remove();
+                    $("#selectCourtRoom").append("<option value=''>  </option>");
+                    for (i = 0; i < msg.data.length; i++) {
+                        //循环插入option
+                        $("#selectCourtRoom").append("<option value='" + msg.data[i].CR_ID + "'>[" + msg.data[i].CR_Name + "]  " + msg.data[i].CR_URL + "  端口:" + msg.data[i].CR_Port + "</option>");
+                    }
+                }
+            });
+            $("#selectCourtRoom").chosen();
+        });
+    });
+</script>
+</html>

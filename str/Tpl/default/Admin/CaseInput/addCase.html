@@ -1,0 +1,121 @@
+<include file="Public/header" />
+<style>
+    tr{height:50px;}		
+</style>		
+<body style="background-color:white;padding:15px;font-size:16px">
+    <form method="post" action="__GROUP__/CaseInput/addCaseHandler" >
+        <div class="page-header">
+            <h1>案件详情</h1>
+        </div><!-- /.page-header -->
+        <table width="100%" border="0" cellpadding="2" cellspacing="0">
+            <tr>
+                <td><label><span style='color:red;'>*</span>检察院名称：</label><input type="text" name="P_CourtName" style="width:200px" value="{$_GET['court_code']}" readonly></td>
+                <td><label><span style='color:red;'>*</span>听证室名称：</label><input type="text" name="P_CourtHome" style="width:200px" value="{$_GET['room']}"readonly></td>
+            </tr>
+            <tr>
+                <td><label><span style='color:red;'>*</span>开庭时间：</label><input type="text" name="P_StartTime" style="width:300px" onfocus="WdatePicker({skin: 'whyGreen', dateFmt: 'yyyy-M-d H:mm:ss'})" value="{$_GET['begin_time']}"></td>
+                <td><label><span style='color:red;'>*</span>结束时间：</label><input type="text" name="P_EndTime" style="width:300px" onfocus="WdatePicker({skin: 'whyGreen', dateFmt: 'yyyy-M-d H:mm:ss'})"></td>
+            </tr>
+            <tr>
+                <td><label><span style='color:red;'>*</span>案号：</label><input type="text" name="P_CaseName" style="width:200px" value="{$_GET['case_no']}"readonly></td>
+                <td><label>案号代码：</label><input type="text" name="P_CaseCode" style="width:200px" value="{$_GET['ahdm']}"readonly></td>
+            </tr>
+            <tr>
+                <td colspan="3"><label><span style='color:red;'>*</span>案由：</label><textarea class="form-control" id="form-field-8" rows="3" name="P_CaseDetail">{$_GET['case_cause']}</textarea></td>
+            </tr>
+            <tr>
+                <td><label><span style='color:red;'>*</span>承办部门：</label><input type="text" name="P_Department" style="width:200px" value="{$_GET['department']}"readonly></td>
+                <!-- <td><label><span style='color:red;'>*</span>直播标题：</label><input type="text" name="P_LiveName" style="width:200px" value="{$playlist.P_LiveName}"></td> -->
+            </tr>
+            <tr>
+                <td colspan="3"><label><span style='color:red;'>*</span>案情简介：</label><textarea class="form-control" id="form-field-8" rows="3" name="P_CaseDesc">{$_GET['case_cause']}</textarea></td>
+            </tr>
+            <tr>
+                <td><label><span style='color:red;'>*</span>庭次：</label><input type="text" name="P_CourtNo" style="width:200px" value="{$_GET['tc']}"readonly></td>
+                <td><label><span style='color:red;'>*</span>案件类别：</label><input type="text" name="P_Catagory" style="width:200px" value="{$_GET['catalog']}"readonly></td>
+            </tr>
+            <tr>
+                <td><label><span style='color:red;'>*</span>审判组织成员：</label><input type="text" name="P_JudgeGroup" style="width:200px" value="{$_GET['judge']}"readonly></td>
+                <td><label><span style='color:red;'>*</span>诉讼参与方：</label><input type="text" name="P_PartyGroup" style="width:200px" value="{$_GET['party']}" readonly></td>
+            </tr>
+            <tr>
+                <td><label><span style='color:red;'>*</span>承办人：</label><input type="text" name="P_Contractor" style="width:200px" value="{$_GET['cbr']}" readonly></td>
+            </tr>
+            <!--            <tr>
+                            <td colspan="2">
+                                <label>入流检察院：</label>
+                                <select class="chosen-select" id="selectCourt1" data-placeholder="检察院名称..."  name="P_CourtIn" style="width:300px;">
+                                    <option value="">  </option>
+                                    <volist name="courts" id="vo">
+                                        <option value={$vo.C_ID}>{$vo.C_Name}</option>
+                                    </volist>																					
+                                </select>
+                            </td>
+                            <td colspan="2">
+                                <label>入流听证室：</label>
+                                <select class="chosen-select" id="selectCourtRoom" data-placeholder="听证室名称..." name="P_CourtRoomIn" style="width:300px;">
+                                </select>
+                            </td>
+                        </tr>-->
+            <tr align="center" style="height:90px">
+                <td colspan="1"></td>
+                <td colspan="1"><button class="btn btn-info" type="submit"><i class="ace-icon fa fa-check bigger-110"></i>保存</button></td>
+                <!--<td colspan="1"><button class="btn" type="reset"><i class="ace-icon fa fa-undo bigger-110"></i>取消</button></td>-->
+            </tr>
+        </table>
+        <br>
+<!--        <input type="hidden" name="P_OutPID"  id="PID2" value="" />
+        <input type="hidden" name="P_Decoder"  id="Decoder2" value="" />-->
+    </form>
+
+    <script src="__PUBLIC__/js/jquery.min.js"></script>
+    <script src="__PUBLIC__/js/chosen.jquery.min.js"></script>
+    <script src="__PUBLIC__/My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript">
+                        jQuery(function ($) {
+                            //清空检察院
+                            $('#selectCourt1').prop('selectedIndex', 0);
+                            //选择入流检察院时，查询该检察院所有的听证室，填入听证室select
+                            $('#selectCourt1').change(function () {
+                                $("#selectCourtRoom").chosen("destroy");
+                                var courtId = $(this).val();
+                                $.ajax({
+                                    url: '/index.php/ApplyTask/searchCourtRoom?C_ID=' + courtId,
+                                    dataType: 'json',
+                                    type: 'GET',
+                                    async: false,
+                                    success: function (msg) {
+                                        //删除所有option
+                                        $("#selectCourtRoom  option").remove();
+                                        $("#selectCourtRoom").append("<option value=''>  </option>");
+                                        for (i = 0; i < msg.data.length; i++) {
+                                            //循环插入option
+                                            $("#selectCourtRoom").append("<option value='" + msg.data[i].CR_ID + "'>[" + msg.data[i].CR_Name + "]  " + msg.data[i].CR_URL + "  端口:" + msg.data[i].CR_Port + "</option>");
+                                        }
+                                    }
+                                });
+                                $("#selectCourtRoom").chosen();
+                            });
+
+                            //选择出流检察院时，查询PID
+                            $('#selectCourt2').change(function () {
+                                var L_ID = $(this).val();
+                                $.ajax({
+                                    url: '/index.php/ApplyTask/searchOutPID?L_ID=' + L_ID,
+                                    dataType: 'json',
+                                    type: 'GET',
+                                    async: false,
+                                    success: function (msg) {
+                                        $("#PID1,#PID2").val(msg.data.L_PID);
+                                        $("#P_CourtOut").val(msg.data.L_CourtName);
+                                        $("#Decoder1,#Decoder2").val(msg.data.L_Decoder);
+                                    }
+                                });
+                            });
+
+                            $('.chosen-select').chosen();
+
+                        });
+    </script>
+</body>
+</html>

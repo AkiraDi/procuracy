@@ -1,0 +1,37 @@
+<include file="Public/header" />
+<style>
+	tr{height:50px;}		
+</style>		
+<body style="background-color:white;padding:15px;font-size:16px">
+	<form method="post" action="__GROUP__/Live/DelayHandler" >
+            <tr>
+            <td><label>案号：</label><input type="text" name="P_CaseName" style="width:200px" readonly value="{$playlist.P_CaseName}"></td>
+            </tr>
+            <br/><br/>
+            <tr>
+                    <td><label>延迟时间：</label>
+                        <select name='delay'>
+                            <option value ="60">60</option>
+                        </select> 分钟<br/>
+                        <!--<span style='color:purple;'>此通道下场直播为{$is_use.P_StartTime}</span>-->
+                    </td>
+            </tr>
+            <br /><br />
+            <tr align="center" style="height:90px">
+                    <td colspan="2"></td>
+                    <td colspan="1"><button class="btn btn-info" type="submit"><i class="ace-icon fa fa-check bigger-90"></i>保存</button></td>
+                    <td colspan="2"></td>
+            </tr>
+	<input type="hidden" name="P_ID"  value="{$playlist.P_ID}" />
+	</form>
+</body>
+<script src="__PUBLIC__/js/jquery.min.js"></script>
+<script src="__PUBLIC__/js/chosen.jquery.min.js"></script>
+<script src="__PUBLIC__/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript">
+	jQuery(function($){
+		
+		
+	});
+</script>
+</html>

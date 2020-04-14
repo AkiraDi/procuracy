@@ -1,0 +1,135 @@
+<include file="Public/header" />
+<style>
+	tr{height:50px;}		
+</style>	
+	<body class="no-skin">
+		<!-- #section:basics/navbar.layout -->
+		<div id="navbar" class="navbar navbar-default">
+			<script type="text/javascript">
+				try{ace.settings.check('navbar' , 'fixed')}catch(e){}
+			</script>
+
+			<div class="navbar-container" id="navbar-container">
+				<!-- #section:basics/sidebar.mobile.toggle -->
+				<button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler">
+					<span class="sr-only">Toggle sidebar</span>
+
+					<span class="icon-bar"></span>
+
+					<span class="icon-bar"></span>
+
+					<span class="icon-bar"></span>
+				</button>
+
+				<!-- /section:basics/sidebar.mobile.toggle -->
+				<div class="navbar-header pull-left">
+					<!-- #section:basics/navbar.layout.brand -->
+					<a href="#" class="navbar-brand">
+						<small>
+							中国检察听证网
+						</small>
+					</a>
+					<!-- /section:basics/navbar.layout.brand -->
+				</div>
+<include file="Public/userbar" />
+			</div><!-- /.navbar-container -->
+		</div>
+
+		<!-- /section:basics/navbar.layout -->
+		<div class="main-container" id="main-container">
+			<script type="text/javascript">
+				try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+			</script>
+
+			<!-- #section:basics/sidebar -->
+			<div id="sidebar" class="sidebar responsive">
+				<script type="text/javascript">
+					try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
+				</script>
+
+<include file="Public/menu" />
+
+				<!-- #section:basics/sidebar.layout.minimize -->
+				<div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+					<i class="ace-icon fa fa-angle-double-left" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
+				</div>
+
+				<!-- /section:basics/sidebar.layout.minimize -->
+				<script type="text/javascript">
+					try{ace.settings.check('sidebar' , 'collapsed')}catch(e){}
+				</script>
+			</div>
+
+			<!-- /section:basics/sidebar -->
+			<div class="main-content">
+				<!-- #section:basics/content.breadcrumbs -->
+				<div class="breadcrumbs" id="breadcrumbs">
+					<script type="text/javascript">
+						try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+					</script>
+					<!-- /section:basics/content.searchbox -->
+				</div>
+				<!-- /section:basics/content.breadcrumbs -->
+				<div class="page-content">
+					<div class="page-content-area">
+						<h3 class="header blue smaller lighter">下载小程序</h3>
+                                                <form method="post" action="__GROUP__/Personal/dowXCXHandler">
+							<table width="60%" border="0" cellpadding="2" cellspacing="0" >
+									<tr>
+									<td colspan="3">
+										<label>选择当前听证室：</label>
+										<select class="chosen-select" id="selectCourt1" data-placeholder="检察院名称..."  name="P_CourtIn" style="width:250px;">
+											<option value="">  </option>
+											<volist name="courts" id="vo">
+												<option value={$vo.C_ID}>{$vo.C_Name}</option>
+											</volist>																					
+										</select>
+									</td>
+									<td colspan="3">
+											<select class="chosen-select" id="selectCourtRoom" data-placeholder="听证室名称..." name="P_CourtRoomIn" style="width:350px;">
+											</select>
+									</td>
+								</tr>
+							<tr align="center" style="height:150px">
+								<td colspan="6"><button class="btn btn-info" type="submit"><i class="ace-icon fa fa-check bigger-110"></i>下载小程序</button></td>
+							</tr>
+						</table>
+					</form>
+					</div><!-- /.page-content-area -->
+				</div><!-- /.page-content -->
+			</div><!-- /.main-content -->
+
+<include file="Public/footer" />
+<script src="__PUBLIC__/js/chosen.jquery.min.js"></script>
+<script src="__PUBLIC__/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript">
+	jQuery(function($){
+		//清空检察院
+		$('#selectCourt1').prop('selectedIndex', 0);
+		//选择入流检察院时，查询该检察院所有的听证室，填入听证室select
+		 $('#selectCourt1').change(function(){
+			$("#selectCourtRoom").chosen("destroy"); 
+			var courtId=$(this).val();
+			$.ajax({
+				url: '/index.php/ApplyTask/searchCourtRoom?C_ID='+courtId,
+				dataType: 'json',
+				type: 'GET',
+				async: false,
+				success: function(msg) {
+					//删除所有option
+					$("#selectCourtRoom  option").remove();
+					$("#selectCourtRoom").append("<option value=''>  </option>");
+					for(i=0;i<msg.data.length;i++){
+						//循环插入option
+						$("#selectCourtRoom").append("<option value='"+msg.data[i].CR_ID+"'>["+msg.data[i].CR_Name+"]  "+msg.data[i].CR_URL+"  端口:"+msg.data[i].CR_Port+"</option>");
+					}
+				}
+			});
+			$("#selectCourtRoom").chosen();
+		});
+		
+		$('.chosen-select').chosen({allow_single_deselect:true}); 
+	});
+</script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<include file="Public/header" />
+<style>
+    tr{height:50px;}		
+</style>		
+<body style="background-color:white;padding:10px;font-size:16px">
+    <form method="post" action="__GROUP__/System/addPortOutHandler" >
+        <div class="page-header">
+            <h1>直播资源出流信息</h1>
+        </div><!-- /.page-header -->
+        <table width="100%" border="0" cellpadding="2" cellspacing="0">
+            <tr>
+                <td colspan="3"><label><span style='color:red;'>*</span>推流url：</label><textarea class="form-control" id="form-field-8" rows="2" name="L_PUSHURL"></textarea></td>
+            </tr>
+            <tr>
+                <td colspan="3"><label><span style='color:red;'>*</span>播放url：</label><textarea class="form-control" id="form-field-8" rows="2" name="L_PULLURL"></textarea></td>
+            </tr>
+            <tr>
+                <td><label><span style='color:red;'>*</span>直播频道号：</label><input type="text" name="L_Channel" style="width:200px" ></td>
+                <td><label><span style='color:red;'>*</span>yms通道号：</label><input type="text" name="L_Decoder" style="width:200px" ></td>
+            </tr>
+            <tr hidden>
+                <td>
+                    <label>所 属 法 院：</label>
+                    <select class="chosen-select" id="form-field-1" data-placeholder="所属检察院..." name="L_CourtName"  style="width:200px;">
+                        <option value="">  </option>
+                        <option value="149"></option>
+<!--                        <volist name="courts" id="vo">
+                            <option value={$vo.C_ID}>{$vo.C_Name}</option>
+                        </volist>														-->
+                    </select>
+                </td>
+                <td>
+                    <label>是否永久使用：</label>
+                    <input name="L_IfAlways" type="radio" class="ace" value=1 checked="checked"><span class="lbl">是</span>
+                    <input name="L_IfAlways" type="radio" class="ace" value=0><span class="lbl">否</span>
+                </td>
+            </tr>
+            <tr class="time" style="display: none">
+                <td><label>开始时间：</label><input type="text" name="L_StartDate" style="width:150px" onfocus="WdatePicker({skin: 'whyGreen', dateFmt: 'yyyy-M-d'})"></td>
+                <td><label>结束时间：</label><input type="text" name="L_EndDate" style="width:150px" onfocus="WdatePicker({skin: 'whyGreen', dateFmt: 'yyyy-M-d'})"></td>
+            </tr>
+
+            <tr>
+                <td colspan="3"><label>备注：</label><textarea class="form-control"  name="L_Comment" id="form-field-8" rows="2"></textarea></td>
+            </tr>
+            <tr align="center" style="height:90px">
+                <td colspan="3">
+                    <button class="btn btn-info" type="submit"><i class="ace-icon fa fa-check bigger-110"></i>保存</button>
+                    &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                    <button class="btn" type="reset"><i class="ace-icon fa fa-undo bigger-110"></i>重置</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</body>
+<script src="__PUBLIC__/js/jquery.min.js"></script>
+<script src="__PUBLIC__/js/chosen.jquery.min.js"></script>
+<script src="__PUBLIC__/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript">
+                    jQuery(function($) {
+                        $('.chosen-select').chosen({allow_single_deselect: true});
+
+                        //永久使用判断是否显示开始时间，结束时间
+                        $('input:radio[name="L_IfAlways"]').change(function() {
+                            //永久使用，隐藏时间选项
+                            if ($('input:radio[name="L_IfAlways"]:checked').val() == 1) {
+                                $(".time").hide();
+                                //显示时间显示
+                            } else {
+                                $(".time").show();
+                            }
+                        });
+
+                        //清空检察院
+                        $('#selectCourt1').prop('selectedIndex', 0);
+                        //选择入流检察院时，查询该检察院所有的听证室，填入听证室select
+                        $('#selectCourt1').change(function() {
+                            $("#selectCourtRoom").chosen("destroy");
+                            var courtId = $(this).val();
+                            $.ajax({
+                                url: '/index.php/ApplyTask/searchCourtRoom?C_ID=' + courtId,
+                                dataType: 'json',
+                                type: 'GET',
+                                async: false,
+                                success: function(msg) {
+                                    //删除所有option
+                                    $("#selectCourtRoom  option").remove();
+                                    $("#selectCourtRoom").append("<option value=''>  </option>");
+                                    for (i = 0; i < msg.data.length; i++) {
+                                        //循环插入option
+                                        $("#selectCourtRoom").append("<option value='" + msg.data[i].CR_ID + "'>[" + msg.data[i].CR_Name + "]  " + msg.data[i].CR_URL + "  端口:" + msg.data[i].CR_Port + "</option>");
+                                    }
+                                }
+                            });
+                            $("#selectCourtRoom").chosen();
+                        });
+                    });
+</script>
+</html>

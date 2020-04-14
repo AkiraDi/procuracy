@@ -1,0 +1,230 @@
+<include file="Public/header" />
+<style> 
+    #cover{ 
+        display:none; 
+        position:fixed; 
+        z-index:1; 
+        top:0; 
+        left:0; 
+        width:100%; 
+        height:100%; 
+        background:rgba(0, 0, 0, 0.44); 
+    } 
+    #coverShow{ 
+        display:none; 
+        position:fixed; 
+        z-index:2; 
+        top:50%; 
+        left:50%; 
+        border:1px solid #127386; 
+        width:300px; 
+        height:100px; 
+        margin-left:-150px; 
+        margin-top:-150px; 
+        background:#127386; 
+    } 
+</style>
+<body class="no-skin">
+    <div id="cover"></div> 
+    <div id="coverShow"> 
+        <table align="center" border="0" width="100%" cellspacing="0" cellpadding="0" style="border-collapse: collapse; height: 100px; min-height: 100px;" bgcolor="#fff">
+            <tr> 
+                <td align="center" bgcolor="#ffffff"> 
+                    正在请求，请正常开庭<br/>
+                    <img src="/Public/img/go.gif"/>
+                </td> 
+            </tr> 
+        </table> 
+    </div>  
+    <!-- #section:basics/navbar.layout -->
+    <div id="navbar" class="navbar navbar-default">
+        <script type="text/javascript">
+            try {
+            ace.settings.check('navbar', 'fixed')
+            } catch (e) {
+            }
+        </script>
+
+        <div class="navbar-container" id="navbar-container">
+            <!-- #section:basics/sidebar.mobile.toggle -->
+            <button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler">
+                <span class="sr-only">Toggle sidebar</span>
+
+                <span class="icon-bar"></span>
+
+                <span class="icon-bar"></span>
+
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- /section:basics/sidebar.mobile.toggle -->
+            <div class="navbar-header pull-left">
+                <!-- #section:basics/navbar.layout.brand -->
+                <a href="#" class="navbar-brand">
+                    <small>
+                        中国检察听证网
+                    </small>
+                </a>
+                <!-- /section:basics/navbar.layout.brand -->
+            </div>
+            <include file="Public/userbar" />
+        </div><!-- /.navbar-container -->
+    </div>
+
+    <!-- /section:basics/navbar.layout -->
+    <div class="main-container" id="main-container">
+        <script type="text/javascript">
+            try {
+            ace.settings.check('main-container', 'fixed')
+            } catch (e) {
+            }
+        </script>
+
+        <!-- #section:basics/sidebar -->
+        <div id="sidebar" class="sidebar responsive">
+            <script type="text/javascript">
+                try {
+                ace.settings.check('sidebar', 'fixed')
+                } catch (e) {
+                }
+            </script>
+
+            <include file="Public/menu" />
+
+            <!-- #section:basics/sidebar.layout.minimize -->
+            <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+                <i class="ace-icon fa fa-angle-double-left" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
+            </div>
+
+            <!-- /section:basics/sidebar.layout.minimize -->
+            <script type="text/javascript">
+                try {
+                ace.settings.check('sidebar', 'collapsed')
+                } catch (e) {
+                }
+            </script>
+        </div>
+
+        <!-- /section:basics/sidebar -->
+        <div class="main-content">
+            <!-- #section:basics/content.breadcrumbs -->
+            <div class="breadcrumbs" id="breadcrumbs">
+                <script type="text/javascript">
+                    try {
+                    ace.settings.check('breadcrumbs', 'fixed')
+                    } catch (e) {
+                    }
+                </script>
+                <!-- /section:basics/content.searchbox -->
+            </div>
+            <!-- /section:basics/content.breadcrumbs -->
+            <div class="page-content">
+                <div class="page-content-area">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <!-- PAGE CONTENT BEGINS -->
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="table-header" style="background-color: blueviolet" >
+                                        <i class="ace-icon fa fa-table"></i>&nbsp&nbsp直播监控(显示当天直播）
+                                    </div>
+                                    <div>
+                                        <table id="table1" class="table table-striped table-bordered table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>庭审状态</th> 
+                                                    <th>案号名称</th>
+                                                    <th>审判组织成员</th>
+                                                    <th>诉讼参与方</th>
+                                                    <th>开庭与闭庭时间</th>
+                                                    <th>操作</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            <volist name="list" id="vo">
+                                                <tr>
+                                                    <td><h4 style="color:red;">{$vo.now}</h4></td> 
+                                                    <td><h4>{$vo.P_CaseName}</h4></td>
+                                                    <td><h4>{$vo.P_JudgeGroup}</h4></td>
+                                                    <td><h4>{$vo.P_PartyGroup}</h4></td>
+                                                    <td><h4>{$vo.P_StartTime} <br><span style="color: red">--------</span><br/>{$vo.P_EndTime}</h4>
+                                                    </td>
+                                                    <td width="25%">
+                                                <if condition="$vo.P_LiveStatus eq 1">
+                                                    <button type="submit" class="btn btn-primary" onclick="media('1', {$vo.P_ID})"><h3>开庭</h3></button>
+                                                <elseif condition="$vo.P_LiveStatus eq 2" />
+                                                    <button type="submit" class="btn btn-success"  onclick="media('2', {$vo.P_ID})"><h3>休庭</h3></button>
+                                                    <button type="submit" class="btn btn-warning"  onclick="media('3', {$vo.P_ID})"><h3>结束</h3></button>
+                                                <elseif condition="$vo.P_LiveStatus eq 3" />
+                                                    <button type="submit" class="btn btn-info"  onclick="media('11', {$vo.P_ID})"><h3>恢复</h3></button>
+                                                <elseif condition="$vo.P_LiveStatus eq 4" />
+                                                    <h4 style="color:brown;">直播已结束</h4>
+                                                </if>
+                                                </td>
+
+                                                </tr>
+                                            </volist>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+
+
+                                </div><!-- end col -->
+                            </div><!-- end row -->
+                            <!-- PAGE CONTENT ENDS -->
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                </div><!-- /.page-content-area -->
+            </div><!-- /.page-content -->
+        </div><!-- /.main-content -->
+
+        <include file="Public/footer" />
+        <script type="text/javascript">
+//            setTimeout(function(){location.reload()},120000); //指定1秒刷新一次
+            function coverit(){
+                var cover = document.getElementById("cover");
+                var covershow = document.getElementById("coverShow");
+                cover.style.display = 'block';
+                covershow.style.display = 'block';
+//                setTimeout("showTime()", 30000);
+            }
+            function showTime() {
+            var cover = document.getElementById("cover");
+                    var covershow = document.getElementById("coverShow");
+                    cover.style.display = '';
+                    covershow.style.display = '';
+            }
+
+            window.onload = function(){
+                $('#table1').dataTable({
+                stateSave: true, //保存表格状态
+                        language: {
+                        "url": "/Public/font/zh_CN.txt"
+                        }
+                });
+            };
+            function media(type, pid){
+//            setTimeout(function(){timeout(type, pid)}, 120000); //两分钟后再调用接口
+//                    coverit();
+                timeout(type, pid);
+            }
+
+            function timeout(type, pid){
+                $.ajax({
+                url: '/index.php/Live/M_operate?type=' + type + '&pid=' + pid,
+                        dataType: 'json',
+                        type: 'GET',
+                        async: false,
+                        success: function (msg) {
+                            layer.alert(msg.info, {icon: 1}, function (index) {
+    //                        showTime()
+                                    location.reload();
+                            });
+                        }
+                });
+            }
+
+        </script>
+</body>
+</html>

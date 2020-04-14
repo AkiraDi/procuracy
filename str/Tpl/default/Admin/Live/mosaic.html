@@ -1,0 +1,28 @@
+<include file="Public/header" />
+<style>
+    tr{height:50px;}		
+</style>		
+<body>
+    <span style="font-size: x-large;color: red;">点击画面，按shift+a开始打码;esc退出打码</span></br>
+    <img src="{$list[pic]}" width="750px" height="400px" ></br>
+    <form method="post" action="__GROUP__/Live/mosaicHandler" id="form1">
+        原点x<input type="readonly" name="origin_x"  id="origin_x" value="" readonly="readonly"/>
+        原点y<input type="readonly" name="origin_y"  id="origin_y" value="" readonly="readonly" />
+        长<input type="test" name="long"  id="long" value=""  readonly="readonly" />
+        宽<input type="test" name="wide"  id="wide" value=""  readonly="readonly"/>
+        <input type="hidden" name="P_ID"  id="P_ID" value="{$list[P_OutPID]}" />
+        <input type="hidden" name="pic"  id="pic" value="{$list[pic]}" />
+        <button class="btn btn-info" type="submit" style="margin-left: 200px;margin-top: 10px;">
+            <i class="ace-icon fa fa-check bigger-110"></i>保存
+        </button>
+    </form>
+</body>
+<script src="__PUBLIC__/js/jquery.min.js"></script>
+<script src="__PUBLIC__/js/jcanvas.min.js"></script>
+<script src="__PUBLIC__/js/html2canvas.min.js"></script>
+<script src="__PUBLIC__/js/screenShot.js"></script>
+<script type="text/javascript">
+    screenShot([16, 65], 27) // 开始快捷键设置为shift+a；退出键为ESC
+    
+    
+</script>
