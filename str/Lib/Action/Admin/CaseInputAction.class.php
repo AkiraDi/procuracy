@@ -168,11 +168,11 @@ class CaseInputAction extends CommonAction {
         }
     }
     
-    public function _before_liveResHandler($_REQUEST) {
+    public function _before_liveResHandler($arr) {
         $Court = new CourtModel();
         $live = $Court->getOutputCourt();
         $Playlist = M('playlist');
-        $where = 'and  P_StartTime < "'.$_REQUEST[P_StartTime].'" and P_EndTime > "'.$_REQUEST[P_DelayEndTime].'" ';
+        $where = 'and  P_StartTime < "'.$arr[P_StartTime].'" and P_EndTime > "'.$arr[P_DelayEndTime].'" ';
         $pidsql = 'select P_OutPID from t_playlist where P_Status = 1 and P_ApplyStatus = 2 '. $where ;
         $findPID=$Playlist->query($pidsql);
         $str= '';
