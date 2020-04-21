@@ -129,13 +129,13 @@ class VerifyTaskAction extends CommonAction {
         }
     }
 
-    public function _before_liveResHandler($_REQUEST) {
+    public function _before_liveResHandler($arr) {
         $Court = new CourtModel();
         $live = $Court->getOutputCourt();
         $Playlist = M('playlist');
 //        $where = 'and  P_StartTime < "' . $_REQUEST[P_StartTime] . '" and P_EndTime > "' . $_REQUEST[P_DelayEndTime] . '" ';
-        $where = 'and  (P_StartTime between "'.date("Y-m-d 00:00:00",  strtotime($_REQUEST[P_StartTime])) .'" and  "'.$_REQUEST[P_StartTime];
-        $where .='" or  P_EndTime between "'.$_REQUEST[P_DelayEndTime] .'" and "'.date("Y-m-d 23:59:59",  strtotime($_REQUEST[P_StartTime])).'")';
+        $where = 'and  (P_StartTime between "'.date("Y-m-d 00:00:00",  strtotime($arr[P_StartTime])) .'" and  "'.$arr[P_StartTime];
+        $where .='" or  P_EndTime between "'.$arr[P_DelayEndTime] .'" and "'.date("Y-m-d 23:59:59",  strtotime($arr[P_StartTime])).'")';
         $pidsql = 'select P_OutPID from t_playlist where P_Status = 1 and P_ApplyStatus = 2 ' . $where;
         $findPID = $Playlist->query($pidsql);
 //        var_dump($pidsql);
@@ -149,7 +149,6 @@ class VerifyTaskAction extends CommonAction {
             $findLiveSql = 'select * from t_live';
         }
         $findPIDList = $Playlist->query($findLiveSql);
-//        var_dump($findPIDList);exit;
         if (!empty($findPIDList)) {
             $_POST['P_CourtOut'] = $findPIDList[0][L_CourtName];
             $_POST['P_OutPID'] = $findPIDList[0][L_Decoder];

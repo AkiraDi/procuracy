@@ -44,7 +44,7 @@ class PlaylistModel extends Model {
             }
             if ((strtotime($_POST['P_EndTime']) - strtotime($_POST['P_StartTime'])) < 300) {
 
-                saveLog('案件录入失败1-2', json_encode($_POST));
+                saveLog('案件录入失败1-2', '手动申请',json_encode($_POST));
                 return false;
             }
         }

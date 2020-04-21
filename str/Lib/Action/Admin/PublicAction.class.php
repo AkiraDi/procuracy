@@ -61,7 +61,7 @@ class PublicAction extends Action {
                     $_SESSION['role'] = $userInfo['role_id'];
                     //使用saveAccessList缓存访问权限
                     RBAC::saveAccessList();
-                    //$this->assign("level1","active open");
+//                    $this->assign("level1","active open");
                     $this->redirect('MyTask/index');
                 } else {
                     $this->error("用户密码错误");
