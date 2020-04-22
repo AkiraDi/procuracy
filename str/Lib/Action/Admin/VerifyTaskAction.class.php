@@ -139,6 +139,7 @@ class VerifyTaskAction extends CommonAction {
         $pidsql = 'select P_OutPID from t_playlist where P_Status = 1 and P_ApplyStatus = 2 ' . $where;
         $findPID = $Playlist->query($pidsql);
 //        var_dump($pidsql);
+        saveLog('可使用通道', json_encode($findPID),$pidsql);
         $str = '';
         if (!empty($findPID)) {
             foreach ($findPID as $value) {
