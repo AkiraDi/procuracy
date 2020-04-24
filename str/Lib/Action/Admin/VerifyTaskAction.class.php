@@ -137,8 +137,9 @@ class VerifyTaskAction extends CommonAction {
         $where = 'and  (P_StartTime between "'.date("Y-m-d 00:00:00",  strtotime($arr[P_StartTime])) .'" and  "'.$arr[P_StartTime];
         $where .='" or  P_EndTime between "'.$arr[P_DelayEndTime] .'" and "'.date("Y-m-d 23:59:59",  strtotime($arr[P_StartTime])).'")';
         $pidsql = 'select P_OutPID from t_playlist where P_Status = 1 and P_ApplyStatus = 2 ' . $where;
+        $Playlist->query("LOCK TABLES t_playlist WRITE");
         $findPID = $Playlist->query($pidsql);
-//        var_dump($pidsql);
+        $Playlist->query("UNLOCK TABLES");
         saveLog('可使用通道', json_encode($findPID),$pidsql);
         $str = '';
         if (!empty($findPID)) {
@@ -149,7 +150,9 @@ class VerifyTaskAction extends CommonAction {
         } else {
             $findLiveSql = 'select * from t_live';
         }
+        $Playlist->query("LOCK TABLES t_live WRITE");
         $findPIDList = $Playlist->query($findLiveSql);
+        $Playlist->query("UNLOCK TABLES");
         if (!empty($findPIDList)) {
             $_POST['P_CourtOut'] = $findPIDList[0][L_CourtName];
             $_POST['P_OutPID'] = $findPIDList[0][L_Decoder];
