@@ -4,6 +4,14 @@ class VerifyTaskAction extends CommonAction {
 
     //审核直播资源首页
     public function index() {
+        S(array(
+            'type'=>'Redis',
+            'host'=>'127.0.0.1',
+            'port'=>'6379',
+            'prefix'=>'P_',
+            'expire'=>30)
+        );
+        S('run',0);
         //选择属于审核人员检察院的申请单，playlist中P_SubmitTo
         $M_Court = $_SESSION['M_Court']; //取出user表中审核人员所属的检察院
         $Playlist = M('playlist');
@@ -77,7 +85,12 @@ class VerifyTaskAction extends CommonAction {
             $_POST['P_ID'] = $_POST['P_ID']; //任务ID
             $playlist = $Playlist->where("P_ID=$_POST[P_ID]")->find();
             $_POST['P_ApplyStatus'] = 2;
-            $this->_before_liveResHandler($playlist);
+            $run = S('run');
+            if($run===1){
+                $this->error("请稍后操作");
+            }else{
+                $this->_before_liveResHandler($playlist);
+            }
         }
     }
 
@@ -118,6 +131,14 @@ class VerifyTaskAction extends CommonAction {
             $data['P_DelayMin'] = $_REQUEST['P_DelayMin']*60;
             $senddealy = json_decode($this->sendDealy($data),true);
             if($senddealy['code'] == 0){
+                S(array(
+                    'type'=>'Redis',
+                    'host'=>'10.1.1.197', //现网
+                    'port'=>'6379',
+                    'prefix'=>'P_',
+                    'expire'=>30)
+                );
+                S('run',2);
                 saveLog("审核通过", $_POST['P_ID']);
                 $this->success("操作成功");
             }  else {
@@ -130,6 +151,14 @@ class VerifyTaskAction extends CommonAction {
     }
 
     public function _before_liveResHandler($arr) {
+        S(array(
+            'type'=>'Redis',
+            'host'=>'10.1.1.197', //现网
+            'port'=>'6379',
+            'prefix'=>'P_',
+            'expire'=>30)
+        );
+        S('run',1);
         $Court = new CourtModel();
         $live = $Court->getOutputCourt();
         $Playlist = M('playlist');
