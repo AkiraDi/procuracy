@@ -6,7 +6,7 @@ class VerifyTaskAction extends CommonAction {
     public function index() {
         S(array(
             'type'=>'Redis',
-            'host'=>'127.0.0.1',
+            'host'=>'10.1.1.197',
             'port'=>'6379',
             'prefix'=>'P_',
             'expire'=>30)
@@ -70,25 +70,34 @@ class VerifyTaskAction extends CommonAction {
     //审核操作
     //编辑=0，待审核=1，审核通过=2，审核不通过=3
     public function verifyTaskHandler() {
-        $Playlist = M('playlist');
-        //如果审核不通过
-        if ($_POST['noPass']) {
-            $data['P_ID'] = $_POST['P_ID']; //任务ID
-            $playlist = $Playlist->where("P_ID=$data[P_ID]")->find();
-            $data['P_ApplyStatus'] = 3;
-            $data['P_ApplyReason'] = $_POST['P_ApplyReason'];
-            if (!$_POST['P_ApplyReason']) {
-                $this->error("请填写不通过原因！");
-            }
-            $this->verifyData($data);
-        } else {
-            $_POST['P_ID'] = $_POST['P_ID']; //任务ID
-            $playlist = $Playlist->where("P_ID=$_POST[P_ID]")->find();
-            $_POST['P_ApplyStatus'] = 2;
-            $run = S('run');
-            if($run===1){
-                $this->error("请稍后操作");
-            }else{
+        $run = S('run');
+        if($run===1){
+            $this->error("请稍后操作");
+        }else{
+            S(array(
+                'type'=>'Redis',
+                'host'=>'10.1.1.197', //现网
+                'port'=>'6379',
+                'prefix'=>'P_',
+                'expire'=>30)
+            );
+            S('run',1);
+            $Playlist = M('playlist');
+            //如果审核不通过
+            if ($_POST['noPass']) {
+                $data['P_ID'] = $_POST['P_ID']; //任务ID
+                $playlist = $Playlist->where("P_ID=$data[P_ID]")->find();
+                $data['P_ApplyStatus'] = 3;
+                $data['P_ApplyReason'] = $_POST['P_ApplyReason'];
+                if (!$_POST['P_ApplyReason']) {
+                    $this->runChack();
+                    $this->error("请填写不通过原因！");
+                }
+                $this->verifyData($data);
+            } else {
+                $_POST['P_ID'] = $_POST['P_ID']; //任务ID
+                $playlist = $Playlist->where("P_ID=$_POST[P_ID]")->find();
+                $_POST['P_ApplyStatus'] = 2;
                 $this->_before_liveResHandler($playlist);
             }
         }
@@ -101,13 +110,16 @@ class VerifyTaskAction extends CommonAction {
         } elseif ($playlist['P_SubmitTo'] == $_SESSION['M_Court']) {
             $res = $Playlist->save($data);
         } else {
+            $this->runChack();
             $this->error("此案件您无法审核");
         }
         if ($res) {
+            $this->runChack();
             //保存日志
             saveLog("审核通过", $_POST['P_ID']);
             $this->success("操作成功");
         } else {
+            $this->runChack();
             $this->error("操作失败");
         }
     }
@@ -131,34 +143,22 @@ class VerifyTaskAction extends CommonAction {
             $data['P_DelayMin'] = $_REQUEST['P_DelayMin']*60;
             $senddealy = json_decode($this->sendDealy($data),true);
             if($senddealy['code'] == 0){
-                S(array(
-                    'type'=>'Redis',
-                    'host'=>'10.1.1.197', //现网
-                    'port'=>'6379',
-                    'prefix'=>'P_',
-                    'expire'=>30)
-                );
-                S('run',2);
+                $this->runChack();
                 saveLog("审核通过", $_POST['P_ID']);
                 $this->success("操作成功");
             }  else {
+                $this->runChack();
                 saveLog("审核未提交前端", $_POST['P_ID']);
                 $this->success("延时操作未成功");
             }
         } else {
+            $this->runChack();
             $this->error("操作失败");
         }
     }
 
     public function _before_liveResHandler($arr) {
-        S(array(
-            'type'=>'Redis',
-            'host'=>'10.1.1.197', //现网
-            'port'=>'6379',
-            'prefix'=>'P_',
-            'expire'=>30)
-        );
-        S('run',1);
+        $this->runChack();
         $Court = new CourtModel();
         $live = $Court->getOutputCourt();
         $Playlist = M('playlist');
@@ -202,6 +202,17 @@ class VerifyTaskAction extends CommonAction {
         $jsonStr = json_encode($params);
         $response = http_post_json($url, $jsonStr);
         return $response;
+    }
+    
+    public function runChack() {
+        S(array(
+            'type'=>'Redis',
+            'host'=>'10.1.1.197', //现网
+            'port'=>'6379',
+            'prefix'=>'P_',
+            'expire'=>30)
+        );
+        S('run',2);
     }
 
 }
