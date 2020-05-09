@@ -6,7 +6,7 @@ class VerifyTaskAction extends CommonAction {
     public function index() {
         S(array(
             'type'=>'Redis',
-            'host'=>'10.1.1.197',
+            'host'=>'127.0.0.1',
             'port'=>'6379',
             'prefix'=>'P_',
             'expire'=>30)
@@ -76,7 +76,7 @@ class VerifyTaskAction extends CommonAction {
         }else{
             S(array(
                 'type'=>'Redis',
-                'host'=>'10.1.1.197', //现网
+                'host'=>'127.0.0.1', //现网
                 'port'=>'6379',
                 'prefix'=>'P_',
                 'expire'=>30)
@@ -183,11 +183,11 @@ class VerifyTaskAction extends CommonAction {
         $findPIDList = $Playlist->query($findLiveSql);
         $Playlist->query("UNLOCK TABLES");
         if (!empty($findPIDList)) {
-            $_POST['P_CourtOut'] = $findPIDList[0][L_CourtName];
-            $_POST['P_OutPID'] = $findPIDList[0][L_Decoder];
-            $_POST['P_PullUrl'] = $findPIDList[0][L_PULLURL];
-            $_POST['P_PushUrl'] = $findPIDList[0][L_PUSHURL];
-            $_POST['P_ChId'] = $findPIDList[0][L_Channel];
+            $_POST['P_CourtOut'] = $findPIDList[rand(0,9)][L_CourtName];
+            $_POST['P_OutPID'] = $findPIDList[rand(0,9)][L_Decoder];
+            $_POST['P_PullUrl'] = $findPIDList[rand(0,9)][L_PULLURL];
+            $_POST['P_PushUrl'] = $findPIDList[rand(0,9)][L_PUSHURL];
+            $_POST['P_ChId'] = $findPIDList[rand(0,9)][L_Channel];
         }
         $this->liveResHandler();
     }
@@ -207,7 +207,7 @@ class VerifyTaskAction extends CommonAction {
     public function runChack() {
         S(array(
             'type'=>'Redis',
-            'host'=>'10.1.1.197', //现网
+            'host'=>'127.0.0.1', //现网
             'port'=>'6379',
             'prefix'=>'P_',
             'expire'=>30)
