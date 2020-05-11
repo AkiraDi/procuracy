@@ -6,7 +6,7 @@ class VerifyTaskAction extends CommonAction {
     public function index() {
         S(array(
             'type'=>'Redis',
-            'host'=>'127.0.0.1',
+            'host'=>'10.1.1.197',
             'port'=>'6379',
             'prefix'=>'P_',
             'expire'=>30)
@@ -76,7 +76,7 @@ class VerifyTaskAction extends CommonAction {
         }else{
             S(array(
                 'type'=>'Redis',
-                'host'=>'127.0.0.1', //现网
+                'host'=>'10.1.1.197', //现网
                 'port'=>'6379',
                 'prefix'=>'P_',
                 'expire'=>30)
@@ -207,7 +207,7 @@ class VerifyTaskAction extends CommonAction {
     public function runChack() {
         S(array(
             'type'=>'Redis',
-            'host'=>'127.0.0.1', //现网
+            'host'=>'10.1.1.197', //现网
             'port'=>'6379',
             'prefix'=>'P_',
             'expire'=>30)
