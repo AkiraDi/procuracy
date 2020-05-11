@@ -183,11 +183,12 @@ class VerifyTaskAction extends CommonAction {
         $findPIDList = $Playlist->query($findLiveSql);
         $Playlist->query("UNLOCK TABLES");
         if (!empty($findPIDList)) {
-            $_POST['P_CourtOut'] = $findPIDList[rand(0,9)][L_CourtName];
-            $_POST['P_OutPID'] = $findPIDList[rand(0,9)][L_Decoder];
-            $_POST['P_PullUrl'] = $findPIDList[rand(0,9)][L_PULLURL];
-            $_POST['P_PushUrl'] = $findPIDList[rand(0,9)][L_PUSHURL];
-            $_POST['P_ChId'] = $findPIDList[rand(0,9)][L_Channel];
+            $a = rand(0,9);
+            $_POST['P_CourtOut'] = $findPIDList[][L_CourtName];
+            $_POST['P_OutPID'] = $findPIDList[$a][L_Decoder];
+            $_POST['P_PullUrl'] = $findPIDList[$a][L_PULLURL];
+            $_POST['P_PushUrl'] = $findPIDList[$a][L_PUSHURL];
+            $_POST['P_ChId'] = $findPIDList[$a][L_Channel];
         }
         $this->liveResHandler();
     }
