@@ -3,16 +3,16 @@
 class PlaylistModel extends Model {
 	protected $name = 'playlist';
 	protected $_validate         =         array(
-			array('P_StartTime','require','开始时间必须填写！'),
-			array('P_EndTime','require','结束时间必须填写！'),
-			array('P_CourtIn','require','检察院必须填写！'),
-			array('P_CourtRoomIn','require','听证室必须填写！'),
-                        array('P_CaseCode','','案件已经存在！',1,'unique'),
-			array('P_StartTime','checkTime','开始时间不能小于当前时间！',1,'callback'),
-			array('P_StartTime','checkTime1','开始时间必须小于结束时间！间隔时间不能小于5分钟！',1,'callback'),
-			array('P_StartTime','checkTime2','工作时间为7:00-19:00,并且直播为同一天，请查询数据！',1,'callback'),
-			array('P_CourtIn','checkcourt','检察院必须填写！',1,'callback'),			
-                        array('P_CourtRoomIn','checkroom','听证室必须填写！',1,'callback'),
+//			array('P_StartTime','require','开始时间必须填写！'),
+//			array('P_EndTime','require','结束时间必须填写！'),
+//			array('P_CourtIn','require','检察院必须填写！'),
+//			array('P_CourtRoomIn','require','听证室必须填写！'),
+//                        array('P_CaseCode','','案件已经存在！',1,'unique'),
+//			array('P_StartTime','checkTime','开始时间不能小于当前时间！',1,'callback'),
+//			array('P_StartTime','checkTime1','开始时间必须小于结束时间！间隔时间不能小于5分钟！',1,'callback'),
+//			array('P_StartTime','checkTime2','工作时间为7:00-19:00,并且直播为同一天，请查询数据！',1,'callback'),
+//			array('P_CourtIn','checkcourt','检察院必须填写！',1,'callback'),			
+//                        array('P_CourtRoomIn','checkroom','听证室必须填写！',1,'callback'),
 
 
     );

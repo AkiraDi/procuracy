@@ -11,11 +11,21 @@
             <tr>
                 <td>
                     <label><span style='color:red;'>*</span>检察院名称：</label>
-                    <input type="text" name="P_CourtIn" style="width:200px" value="{$playlist.C_Name}" disabled="disabled">
+                    <select class="chosen-select" id="selectCourt1" data-placeholder="检察院名称..."  name="P_CourtIn" style="width:200px;" value="{$playlist.P_CourtIn}" disabled="disabled">
+                        <option value="">  </option>
+                        <volist name="courts" id="vo" >
+                            <if condition="$playlist.P_CourtIn eq $vo['C_ID']">
+                                <option value="{$vo.C_ID}" selected="selected">{$vo.C_Name}</option>
+                            <else />
+                                <option value={$vo.C_ID} >{$vo.C_Name}</option>
+                            </if>
+                        </volist>																					
+                    </select>
                 </td>
                 <td>
                     <label><span style='color:red;'>*</span>听证室名称：</label>
-                    <input type="text" name="P_CourtRoomIn" style="width:200px" value="{$playlist.CR_Name}" disabled="disabled">
+                    <select class="chosen-select" id="selectCourtRoom" data-placeholder="听证室名称..." name="P_CourtRoomIn" style="width:200px;" value="{$playlist.P_CourtRoomIn}" disabled="disabled">
+                    </select>
                 </td>
             </tr>
             <tr>
@@ -23,8 +33,19 @@
                 <td><label>结束时间：</label><input type="text" name="P_EndTime" style="width:300px" onfocus="WdatePicker({skin: 'whyGreen', dateFmt: 'yyyy-M-d H:mm:ss'})" value="{$playlist.P_EndTime}" disabled="disabled"></td>
             </tr>
             <tr>
-                <td><label>案件编号：</label><input type="text" name="P_CaseName" style="width:200px" value="{$playlist.P_CaseName}" disabled="disabled"></td>
-                <td><label>庭次：</label><input type="text" name="P_CourtNo" style="width:200px" value="{$playlist.P_CourtNo}" disabled="disabled"></td>
+                <td><label>案件名称：</label><input type="text" name="P_CaseName" style="width:200px" value="{$playlist.P_CaseName}" disabled="disabled"></td>
+                <td><label>听证类型：</label><select class="chosen-select" data-placeholder="检察院名称..." name="P_CourtNo" style="width:200px;" disabled="disabled">
+                        <option value="1"  <if condition="$playlist.P_CourtNo eq 1"> selected = "selected"</if> > 刑事申诉案件听证会 </option>		
+                        <option value="2" <if condition="$playlist.P_CourtNo eq 2"> selected = "selected"</if>> 民事诉讼监督案件听证会 </option>		
+                        <option value="3" <if condition="$playlist.P_CourtNo eq 3"> selected = "selected"</if>> 行政诉讼监督案件听证会 </option>						
+                        <option value="4" <if condition="$playlist.P_CourtNo eq 4"> selected = "selected"</if>> 行政公益诉讼案件听证会 </option>	   
+                        <option value="5" <if condition="$playlist.P_CourtNo eq 5"> selected = "selected"</if>> 民事公益诉讼案件听证会 </option>		
+                        <option value="6" <if condition="$playlist.P_CourtNo eq 6"> selected = "selected"</if>> 审查逮捕案件听证会 </option>		
+                        <option value="7" <if condition="$playlist.P_CourtNo eq 7"> selected = "selected"</if>> 拟不起诉案件听证会 </option>						
+                        <option value="8" <if condition="$playlist.P_CourtNo eq 8"> selected = "selected"</if>> 羁押必要性审查案件听证会 </option>	   
+                        <option value="9" <if condition="$playlist.P_CourtNo eq 9"> selected = "selected"</if>> 未成年人刑事案件听证会 </option>	
+                    </select>
+                </td>
             </tr>
             <tr>
                 <td colspan="3"><label>案件详情：</label><textarea class="form-control" id="form-field-8" rows="3" name="P_CaseDetail" disabled="disabled">{$playlist.P_CaseDetail}</textarea></td>
@@ -38,8 +59,8 @@
                 <td><label>案件类别：</label><input type="text" name="P_Catagory" style="width:200px" value="{$playlist.P_Catagory}" disabled="disabled"></td>
             </tr>
             <tr>
-                <td><label>审判组织成员：</label><input type="text" name="P_JudgeGroup" style="width:200px" value="{$playlist.P_JudgeGroup}" disabled="disabled"></td>
-                <td><label>诉讼参与方：</label><input type="text" name="P_PartyGroup" style="width:200px" value="{$playlist.P_PartyGroup}" disabled="disabled"></td>
+                <td  colspan="3"><label>参与人：</label><textarea class="form-control" id="form-field-8" rows="3" name="P_JudgeGroup">{$playlist.P_JudgeGroup}</textarea></td>
+                <!--<td><label>诉讼参与方：</label><input type="text" name="P_PartyGroup" style="width:200px" value="{$playlist.P_PartyGroup}"></td>-->
             </tr>
         </table>
         <input type="hidden" name="P_ID"  value="{$playlist.P_ID}" />
@@ -50,7 +71,6 @@
     <script src="__PUBLIC__/My97DatePicker/WdatePicker.js"></script>
     <script type="text/javascript">
                         jQuery(function ($) {
-                            console.log({$courts});
                             //清空检察院
 //                            $('#selectCourt1').prop('selectedIndex', 0);
                             //选择入流检察院时，查询该检察院所有的听证室，填入听证室select

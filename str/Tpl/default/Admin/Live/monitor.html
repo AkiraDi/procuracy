@@ -132,11 +132,11 @@
                                         <table id="table1" class="table table-striped table-bordered table-hover">
                                             <thead>
                                                 <tr>
-                                                    <th>庭审状态</th> 
-                                                    <th>案号名称</th>
-                                                    <th>审判组织成员</th>
-                                                    <th>诉讼参与方</th>
-                                                    <th>开庭与闭庭时间</th>
+                                                    <th>听证会状态</th> 
+                                                    <th width="15%">案件名称</th>
+                                                    <th width="30%">听证会参与人</th>
+                                                    <th>听证会开始时间</th>
+                                                    <th>听证会结束时间</th>
                                                     <th>操作</th>
                                                 </tr>
                                             </thead>
@@ -146,14 +146,14 @@
                                                     <td><h4 style="color:red;">{$vo.now}</h4></td> 
                                                     <td><h4>{$vo.P_CaseName}</h4></td>
                                                     <td><h4>{$vo.P_JudgeGroup}</h4></td>
-                                                    <td><h4>{$vo.P_PartyGroup}</h4></td>
-                                                    <td><h4>{$vo.P_StartTime} <br><span style="color: red">--------</span><br/>{$vo.P_EndTime}</h4>
+                                                    <td><h4>{$vo.P_StartTime}</h4></td>
+                                                    <td><h4>{$vo.P_EndTime}</h4>
                                                     </td>
                                                     <td width="25%">
                                                 <if condition="$vo.P_LiveStatus eq 1">
-                                                    <button type="submit" class="btn btn-primary" onclick="media('1', {$vo.P_ID})"><h3>开庭</h3></button>
+                                                    <button type="submit" class="btn btn-primary" onclick="media('1', {$vo.P_ID})"><h3>开始</h3></button>
                                                 <elseif condition="$vo.P_LiveStatus eq 2" />
-                                                    <button type="submit" class="btn btn-success"  onclick="media('2', {$vo.P_ID})"><h3>休庭</h3></button>
+                                                    <button type="submit" class="btn btn-success"  onclick="media('2', {$vo.P_ID})"><h3>暂停</h3></button>
                                                     <button type="submit" class="btn btn-warning"  onclick="media('3', {$vo.P_ID})"><h3>结束</h3></button>
                                                 <elseif condition="$vo.P_LiveStatus eq 3" />
                                                     <button type="submit" class="btn btn-info"  onclick="media('11', {$vo.P_ID})"><h3>恢复</h3></button>

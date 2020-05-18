@@ -33,11 +33,22 @@
                 <td><label>结束时间：</label><input type="text" name="P_EndTime" style="width:300px" onfocus="WdatePicker({skin: 'whyGreen', dateFmt: 'yyyy-M-d H:mm:ss'})" value="{$playlist.P_EndTime}"></td>
             </tr>
             <tr>
-                <td><label>案件编号：</label><input type="text" name="P_CaseName" style="width:200px" value="{$playlist.P_CaseName}"></td>
-                <td><label>庭次：</label><input type="text" name="P_CourtNo" style="width:200px" value="{$playlist.P_CourtNo}"></td>
+                <td><label>案件名称：</label><input type="text" name="P_CaseName" style="width:200px" value="{$playlist.P_CaseName}"></td>
+                <td><label>听证类型：</label><select class="chosen-select" data-placeholder="检察院名称..." name="P_CourtNo" style="width:200px;">
+                        <option value="1"  <if condition="$playlist.P_CourtNo eq 1"> selected = "selected"</if> > 刑事申诉案件听证会 </option>		
+                        <option value="2" <if condition="$playlist.P_CourtNo eq 2"> selected = "selected"</if>> 民事诉讼监督案件听证会 </option>		
+                        <option value="3" <if condition="$playlist.P_CourtNo eq 3"> selected = "selected"</if>> 行政诉讼监督案件听证会 </option>						
+                        <option value="4" <if condition="$playlist.P_CourtNo eq 4"> selected = "selected"</if>> 行政公益诉讼案件听证会 </option>	   
+                        <option value="5" <if condition="$playlist.P_CourtNo eq 5"> selected = "selected"</if>> 民事公益诉讼案件听证会 </option>		
+                        <option value="6" <if condition="$playlist.P_CourtNo eq 6"> selected = "selected"</if>> 审查逮捕案件听证会 </option>		
+                        <option value="7" <if condition="$playlist.P_CourtNo eq 7"> selected = "selected"</if>> 拟不起诉案件听证会 </option>						
+                        <option value="8" <if condition="$playlist.P_CourtNo eq 8"> selected = "selected"</if>> 羁押必要性审查案件听证会 </option>	   
+                        <option value="9" <if condition="$playlist.P_CourtNo eq 9"> selected = "selected"</if>> 未成年人刑事案件听证会 </option>													
+												
+                    </select></td>
             </tr>
             <tr>
-                <td colspan="3"><label>案件详情：</label><textarea class="form-control" id="form-field-8" rows="3" name="P_CaseDetail">{$playlist.P_CaseDetail}</textarea></td>
+                <td colspan="3"><label>案件简介：</label><textarea class="form-control" id="form-field-8" rows="3" name="P_CaseDetail">{$playlist.P_CaseDetail}</textarea></td>
             </tr>
             <tr>
                 <td><label>承办部门：</label><input type="text" name="P_Department" style="width:200px" value="{$playlist.P_Department}"></td>
@@ -48,8 +59,8 @@
                 <td><label>案件类别：</label><input type="text" name="P_Catagory" style="width:200px" value="{$playlist.P_Catagory}"></td>
             </tr>
             <tr>
-                <td><label>审判组织成员：</label><input type="text" name="P_JudgeGroup" style="width:200px" value="{$playlist.P_JudgeGroup}"></td>
-                <td><label>诉讼参与方：</label><input type="text" name="P_PartyGroup" style="width:200px" value="{$playlist.P_PartyGroup}"></td>
+                <td  colspan="3"><label>参与人：</label><textarea class="form-control" id="form-field-8" rows="3" name="P_JudgeGroup">{$playlist.P_JudgeGroup}</textarea></td>
+                <!--<td><label>诉讼参与方：</label><input type="text" name="P_PartyGroup" style="width:200px" value="{$playlist.P_PartyGroup}"></td>-->
             </tr>
             <tr align="center" style="height:90px">
                 <td><button class="btn btn-info" type="submit"><i class="ace-icon fa fa-check bigger-110"></i>保存</button></td>

@@ -70,17 +70,17 @@ class VerifyTaskAction extends CommonAction {
     //审核操作
     //编辑=0，待审核=1，审核通过=2，审核不通过=3
     public function verifyTaskHandler() {
-        $run = S('run');
-        if($run===1){
-            $this->error("请稍后操作");
-        }else{
-            S(array(
+        S(array(
                 'type'=>'Redis',
                 'host'=>'10.1.1.197', //现网
                 'port'=>'6379',
                 'prefix'=>'P_',
                 'expire'=>30)
             );
+        $run = S('run');
+        if($run===1){
+            $this->error("请稍后操作");
+        }else{
             S('run',1);
             $Playlist = M('playlist');
             //如果审核不通过
@@ -163,8 +163,8 @@ class VerifyTaskAction extends CommonAction {
         $live = $Court->getOutputCourt();
         $Playlist = M('playlist');
 //        $where = 'and  P_StartTime < "' . $_REQUEST[P_StartTime] . '" and P_EndTime > "' . $_REQUEST[P_DelayEndTime] . '" ';
-        $where = 'and  (P_StartTime between "'.date("Y-m-d 00:00:00",  strtotime($arr[P_StartTime])) .'" and  "'.$arr[P_StartTime];
-        $where .='" or  P_EndTime between "'.$arr[P_DelayEndTime] .'" and "'.date("Y-m-d 23:59:59",  strtotime($arr[P_StartTime])).'")';
+        $where = 'and  (P_StartTime between "'.$arr[P_StartTime] .'" and  "'.$arr[P_DelayEndTime];
+        $where .='" or  P_EndTime between "'.$arr[P_StartTime] .'" and "'.$arr[P_DelayEndTime].'")';
         $pidsql = 'select P_OutPID from t_playlist where P_Status = 1 and P_ApplyStatus = 2 ' . $where;
         $Playlist->query("LOCK TABLES t_playlist WRITE");
         $findPID = $Playlist->query($pidsql);
@@ -184,7 +184,7 @@ class VerifyTaskAction extends CommonAction {
         $Playlist->query("UNLOCK TABLES");
         if (!empty($findPIDList)) {
             $a = rand(0,9);
-            $_POST['P_CourtOut'] = $findPIDList[][L_CourtName];
+            $_POST['P_CourtOut'] = $findPIDList[$a][L_CourtName];
             $_POST['P_OutPID'] = $findPIDList[$a][L_Decoder];
             $_POST['P_PullUrl'] = $findPIDList[$a][L_PULLURL];
             $_POST['P_PushUrl'] = $findPIDList[$a][L_PUSHURL];
