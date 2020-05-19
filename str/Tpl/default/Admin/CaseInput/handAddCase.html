@@ -1,6 +1,13 @@
 <include file="Public/header" />
 <style>
-    tr{height:50px;}		
+    tr{height:50px;}	
+    .memtitel{
+        width: 90px;
+        line-height: 2
+    }
+    input{
+        margin-left: 2px
+    }
 </style>		
 <body style="background-color:white;padding:15px;font-size:16px">
     <form method="post" action="__GROUP__/CaseInput/handAddCaseHandler" >
@@ -79,51 +86,44 @@
                 <td id = 'member'colspan="3"><label><span style='color:red;'>*</span>参与人：</label><br/>
                     <!--<input type="button" onclick="addtr();" id="add" value="添加检察人员"/><br/>-->
                     <div id ="procurator">
-                        <label>检察官：</label><input type="text" name="procurator[]" value="" placeholder="姓名">
-                        <!--<button class="btn btn-xs btn-success" id='procuratorADD'>-->
-                        <span class="addName">
-                            <i class="ace-icon fa fa-plus-circle"></i>
-                        </span>
+                        <label class="memtitel">检察官：</label><input type="text" name="procurator[]" value="" placeholder="姓名">
+                        <span class="addName"><i class="ace-icon fa fa-plus-circle"></i></span>
+                        <span class="cutName"><i class="ace-icon fa fa-minus-circle"></i></span>
                     </div>
                     <div id ="hostprocurator">
-                        <span><label>主办检察官：</label><input type="text" name="hostprocurator[]" value="" placeholder="姓名"></span>
-                        <span class="addName">
-                            <i class="ace-icon fa fa-plus-circle"></i>
-                        </span>
+                        <label class="memtitel">主办检察官：</label><input type="text" name="hostprocurator[]" value="" placeholder="姓名">
+                        <span class="addName"><i class="ace-icon fa fa-plus-circle"></i></span>
+                        <span class="cutName"><i class="ace-icon fa fa-minus-circle"></i></span>
                     </div>
                     <div id ="procuratoraid">
-                        <span><label>检察官助理：</label><input type="text" name="procuratoraid[]" value="" placeholder="姓名"></span>
-                        <span class="addName">
-                            <i class="ace-icon fa fa-plus-circle"></i>
-                        </span>
+                        <label class="memtitel">检察官助理：</label><input type="text" name="procuratoraid[]" value="" placeholder="姓名">
+                        <span class="addName"><i class="ace-icon fa fa-plus-circle"></i></span>
+                        <span class="cutName"><i class="ace-icon fa fa-minus-circle"></i></span>
                     </div>
                     <div id ="clerk">
-                        <span><label>书记员：</label><input type="text" name="clerk[]" value="" placeholder="姓名"></span>
-                        <span class="addName">
-                            <i class="ace-icon fa fa-plus-circle"></i>
-                        </span></div>
+                        <label class="memtitel">书记员：</label><input type="text" name="clerk[]" value="" placeholder="姓名">
+                        <span class="addName"><i class="ace-icon fa fa-plus-circle"></i></span>
+                        <span class="cutName"><i class="ace-icon fa fa-minus-circle"></i></span>
+                    </div>
                     <div id ="party">
-                        <span><label>案件当事人：</label><input type="text" name="party[]" value="" placeholder="姓名"></span>
-                        <span class="addName">
-                            <i class="ace-icon fa fa-plus-circle"></i>
-                        </span></div>
+                        <label class="memtitel">案件当事人：</label><input type="text" name="party[]" value="" placeholder="姓名">
+                        <span class="addName"><i class="ace-icon fa fa-plus-circle"></i></span>
+                        <span class="cutName"><i class="ace-icon fa fa-minus-circle"></i></span>
+                    </div>
                     <div id ="Hear">
-                        <span><label>听证员：</label><input type="text" name="hear[]" value="" placeholder="姓名"></span>
-                        <span class="addName">
-                            <i class="ace-icon fa fa-plus-circle"></i>
-                        </span>
+                        <label class="memtitel">听证员：</label><input type="text" name="hear[]" value="" placeholder="姓名">
+                        <span class="addName"><i class="ace-icon fa fa-plus-circle"></i></span>
+                        <span class="cutName"><i class="ace-icon fa fa-minus-circle"></i></span>
                     </div>
                     <div id ="sit">
-                        <span><label>旁听人员：</label><input type="text" name="sit[]" value="" placeholder="姓名"></span>
-                        <span class="addName">
-                            <i class="ace-icon fa fa-plus-circle"></i>
-                        </span>
+                        <label class="memtitel">旁听人员：</label><input type="text" name="sit[]" value="" placeholder="姓名">
+                        <span class="addName"><i class="ace-icon fa fa-plus-circle"></i></span>
+                        <span class="cutName"><i class="ace-icon fa fa-minus-circle"></i></span>
                     </div>
                     <div id ="police">
-                        <span><label>司法警察：</label><input type="text" name="police[]" value="" placeholder="姓名"></span>
-                        <span class="addName">
-                            <i class="ace-icon fa fa-plus-circle"></i>
-                        </span>
+                        <label class="memtitel">司法警察：</label><input type="text" name="police[]" value="" placeholder="姓名">
+                        <span class="addName"><i class="ace-icon fa fa-plus-circle"></i></span>
+                        <span class="cutName"><i class="ace-icon fa fa-minus-circle"></i></span>
                     </div>
                 </td>
             </tr>
@@ -159,7 +159,7 @@
                         $("#selectCourtRoom").append("<option value=''>  </option>");
                         for (i = 0; i < msg.data.length; i++) {
                             //循环插入option
-                            $("#selectCourtRoom").append("<option value='" + msg.data[i].CR_ID + "'>[" + msg.data[i].CR_Name + "]  " + msg.data[i].CR_URL + "  端口:" + msg.data[i].CR_Port + "</option>");
+                            $("#selectCourtRoom").append("<option value='" + msg.data[i].CR_ID + "'>[" + msg.data[i].CR_Name + "]</option>");
                         }
                     }
                 });
@@ -188,6 +188,10 @@
                 var id = $(this).parent().attr('id');
                 var html = '<input type="text" name="' + id + '[]" value="" placeholder="姓名">'
                 $(this).before(html);
+            });
+            
+            $(".cutName").on("click", function() {
+                $(this).prev().prev().remove();
             });
         });
     </script>
