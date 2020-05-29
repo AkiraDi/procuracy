@@ -6,7 +6,7 @@
         line-height: 2
     }
     input{
-        margin-left: 2px
+        margin-left: 2px;
     }
 </style>		
 <body style="background-color:white;padding:15px;font-size:16px">
@@ -32,11 +32,11 @@
                             </td>
                         </tr>
                         <tr>
-                            <td><label><span style='color:red;'>*</span>开始时间：</label><input type="text" name="P_StartTime" style="width:300px" onfocus="WdatePicker({skin: 'whyGreen', dateFmt: 'yyyy-M-d H:mm:ss'})" required="required"></td>
-                            <td><label><span style='color:red;'>*</span>结束时间：</label><input type="text" name="P_EndTime" style="width:300px" onfocus="WdatePicker({skin: 'whyGreen', dateFmt: 'yyyy-M-d H:mm:ss'})" required="required"></td>
+                            <td><label><span style='color:red;'>*</span>开始时间：</label><input type="text" name="P_StartTime" style="width:300px" autocomplete="off" onfocus="WdatePicker({skin: 'whyGreen', dateFmt: 'yyyy-M-d H:mm:ss'})" required="required"></td>
+                            <td><label><span style='color:red;'>*</span>结束时间：</label><input type="text" name="P_EndTime" style="width:300px" autocomplete="off" onfocus="WdatePicker({skin: 'whyGreen', dateFmt: 'yyyy-M-d H:mm:ss'})" required="required"></td>
                         </tr>
                         <tr>
-                            <td><label><span style='color:red;'>*</span>案件名称：</label><input type="text" name="P_CaseName" style="width:200px" value="{$_GET['case_no']}" required="required"></td>
+                            <td><label><span style='color:red;'>*</span>案件名称：</label><input type="text" name="P_CaseName" style="width:200px" autocomplete="off" value="{$_GET['case_no']}" required="required"></td>
                             <td><label><span style='color:red;'>*</span>听证类型：</label>
                                 <select class="chosen-select" data-placeholder="检察院名称..."  name="P_CourtNo" style="width:200px;">
                                     <option value="1"> 刑事申诉案件听证会 </option>		
