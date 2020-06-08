@@ -162,12 +162,12 @@ class VerifyTaskAction extends CommonAction {
         $Court = new CourtModel();
         $live = $Court->getOutputCourt();
         $Playlist = M('playlist');
-//        $where = 'and  P_StartTime < "' . $_REQUEST[P_StartTime] . '" and P_EndTime > "' . $_REQUEST[P_DelayEndTime] . '" ';
-        $where = 'and  (P_StartTime between "'.$arr[P_StartTime] .'" and  "'.$arr[P_DelayEndTime];
-        $where .='" or  P_EndTime between "'.$arr[P_StartTime] .'" and "'.$arr[P_DelayEndTime].'")';
+        $where = 'and  (P_StartTime between "'.date("Y-m-d 00:00:00",  strtotime($arr[P_DelayEndTime])) .'" and  "'.$arr[P_StartTime];
+        $where .='" or  P_EndTime between "'.$arr[P_StartTime] .'" and "'.date("Y-m-d 23:59:59",  strtotime($arr[P_StartTime])).'")';
         $pidsql = 'select P_OutPID from t_playlist where P_Status = 1 and P_ApplyStatus = 2 ' . $where;
         $findPID = $Playlist->query($pidsql);
-        saveLog('可使用通道', json_encode($findPID),$pidsql);
+        $findPID = $Playlist->query($pidsql);
+        saveLog('已经使用通道', json_encode($findPID),$pidsql);
         $str = '';
         if (!empty($findPID)) {
             foreach ($findPID as $value) {
@@ -179,7 +179,7 @@ class VerifyTaskAction extends CommonAction {
         }
         $findPIDList = $Playlist->query($findLiveSql);
         if (!empty($findPIDList)) {
-            $a = rand(0,9);
+            $a = rand(0,count($findPIDList)-1);
             $_POST['P_CourtOut'] = $findPIDList[$a][L_CourtName];
             $_POST['P_OutPID'] = $findPIDList[$a][L_Decoder];
             $_POST['P_PullUrl'] = $findPIDList[$a][L_PULLURL];
