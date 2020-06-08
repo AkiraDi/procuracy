@@ -55,10 +55,7 @@ class LiveAction extends CommonAction {
             $this->error('此案件您没有操作权限！');
         }
         $ymsdata = json_decode($this->ymsRE($res[0]), true);
-//        $ymsdata = 0;
         if ($ymsdata['code'] == 0) {
-//            $zbdata = 0;
-            
             switch ($_GET['type']) {
                 case "1":
                     $data['status'] = 5;
@@ -87,11 +84,13 @@ class LiveAction extends CommonAction {
         $sign = md5(C('YMSCODE') . C('YMSAPP') . $time);
         $ysmURL = C('YMSURL') . 'liveControl/broadcast';
         if ($_GET['type'] == 11) {
-            $_GET['type'] = 1;
+            $type = 1;
+        }  else {
+            $type = $_GET['type'];
         }
         $params = array(
             'pid' => $res['P_OutPID'],
-            'type' => $_GET['type'],
+            'type' => $type,
             'time' => $time,
             'sign' => $sign,
         );
