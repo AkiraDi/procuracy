@@ -182,7 +182,7 @@ class VerifyTaskAction extends CommonAction {
             $a = rand(0,count($findPIDList)-1);
             $_POST['P_CourtOut'] = $findPIDList[$a][L_CourtName];
             $_POST['P_OutPID'] = $findPIDList[$a][L_Decoder];
-            $_POST['P_PullUrl'] = $findPIDList[$a][L_PULLURL];
+            $_POST['P_PullUrl'] = $this->haveParam($findPIDList[$a],$arr['P_StartTime']);
             $_POST['P_PushUrl'] = $findPIDList[$a][L_PUSHURL];
             $_POST['P_ChId'] = $findPIDList[$a][L_Channel];
         }
@@ -210,6 +210,14 @@ class VerifyTaskAction extends CommonAction {
             'expire'=>30)
         );
         S('run',2);
+    }
+    
+    public function haveParam($arr,$time) {
+        $sort = '&*)#@MJIWERWsdfsi3*7';
+        $sid = $arr['L_Decoder'];
+        $date = strtotime(date("Y-m-d 23:59:59",strtotime($time)));
+        $key = md5($sort.$sid.$date);
+        return $arr['L_PUSHURL'].'?tySecret='.$key."&tyTime=".$date;
     }
 
 }
